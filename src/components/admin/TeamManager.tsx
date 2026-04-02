@@ -132,8 +132,18 @@ export default function TeamManager({ initialData }: { initialData: any[] }) {
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="bio">Bio</Label>
+                            <Label htmlFor="linkedinUrl">LinkedIn URL</Label>
+                            <Input id="linkedinUrl" name="linkedinUrl" defaultValue={currentMember?.linkedinUrl} type="url" placeholder="https://linkedin.com/in/..." />
+                        </div>
+
+                        <div className="space-y-2">
+                            <Label htmlFor="bio">Short Description (Bio)</Label>
                             <Textarea id="bio" name="bio" defaultValue={currentMember?.bio} />
+                        </div>
+
+                        <div className="space-y-2">
+                            <Label htmlFor="detailedDescription">Detailed Description</Label>
+                            <Textarea id="detailedDescription" name="detailedDescription" defaultValue={currentMember?.detailedDescription} className="min-h-[150px]" placeholder="Full profile description for their specific page..." />
                         </div>
 
                         <div className="space-y-2">

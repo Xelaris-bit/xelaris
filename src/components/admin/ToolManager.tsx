@@ -26,7 +26,7 @@ import Image from 'next/image';
 
 import { useRouter } from 'next/navigation';
 
-export default function ToolManager({ initialData }: { initialData: any[] }) {
+export default function ToolManager({ initialData, services = [] }: { initialData: any[], services?: any[] }) {
     const router = useRouter();
     const [isOpen, setIsOpen] = useState(false);
     const [currentTool, setCurrentTool] = useState<any>(null);
@@ -160,15 +160,12 @@ export default function ToolManager({ initialData }: { initialData: any[] }) {
                                 <select
                                     id="category"
                                     name="category"
-                                    defaultValue={currentTool?.category || 'Other'}
+                                    defaultValue={currentTool?.category || (services.length > 0 ? services[0].title : 'Other')}
                                     className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                                 >
-                                    <option value="Software Development">Software Development</option>
-                                    <option value="QA & Testing">QA & Testing</option>
-                                    <option value="Digital Marketing">Digital Marketing</option>
-                                    <option value="Data Analysis">Data Analysis</option>
-                                    <option value="DevOps">DevOps</option>
-                                    <option value="Media & Creative">Media & Creative</option>
+                                    {services.map(service => (
+                                        <option key={service._id || service.title} value={service.title}>{service.title}</option>
+                                    ))}
                                     <option value="Other">Other</option>
                                 </select>
                             </div>

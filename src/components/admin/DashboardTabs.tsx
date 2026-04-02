@@ -80,7 +80,7 @@ export default function DashboardTabs({ role, permissions, data }: DashboardTabs
                 {hasAccess('team') && <TabsContent value="team"><TeamManager initialData={teamMembers} /></TabsContent>}
                 {hasAccess('services') && <TabsContent value="services"><ServiceManager initialData={services} /></TabsContent>}
                 {hasAccess('careers') && <TabsContent value="careers"><CareerManager initialData={careers} /></TabsContent>}
-                {hasAccess('tools') && <TabsContent value="tools"><ToolManager initialData={tools} /></TabsContent>}
+                {hasAccess('tools') && <TabsContent value="tools"><ToolManager initialData={tools} services={services} /></TabsContent>}
                 {hasAccess('settings') && <TabsContent value="promo"><PromoManager settings={settings} initialMedia={media} /></TabsContent>}
                 {hasAccess('activity') && <TabsContent value="activity"><ActivityLog activities={activities} isSuperAdmin={isSuperAdmin} /></TabsContent>}
             </div>

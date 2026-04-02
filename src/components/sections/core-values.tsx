@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Gem, Handshake, Award, Lightbulb } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 const values = [
@@ -38,13 +39,24 @@ const CoreValues = () => {
   return (
     <section className="section-padding bg-gradient-to-b from-slate-900 to-slate-950 text-white">
       <div className="container mx-auto px-4">
-        <div className="mx-auto mb-12 max-w-2xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-white md:text-4xl">
-            Our Core Values
-          </h2>
-          <p className="mt-4 text-lg text-slate-300">
+        <div className="mb-20 text-center">
+          <motion.h2 
+            initial={{ opacity: 0, y: -20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-4xl font-extrabold tracking-tight text-white md:text-5xl lg:text-6xl mb-6"
+          >
+            Our Core <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">Values</span>
+          </motion.h2>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed"
+          >
             The principles that guide our work and define our culture.
-          </p>
+          </motion.p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">

@@ -4,16 +4,30 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Mail, Phone, MapPin } from "lucide-react";
 import ContactForm from "@/components/contact-form";
+import { motion } from "framer-motion";
 
 const ContactSection = ({ settings }: { settings?: any }) => {
     return (
         <section id="contact-form" className="w-full py-16 md:py-24 bg-background">
             <div className="container mx-auto px-4 md:px-6">
-                <div className="text-center mb-12">
-                    <h2 className="text-3xl md:text-4xl font-bold">Connect With <span className="text-accent">Future Creators</span></h2>
-                    <p className="mt-4 text-muted-foreground max-w-2xl mx-auto">
+                <div className="mb-20 text-center">
+                    <motion.h2 
+                        initial={{ opacity: 0, y: -20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="text-4xl font-extrabold tracking-tight text-foreground md:text-5xl lg:text-6xl mb-6"
+                    >
+                        Connect With <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">Future Creators</span>
+                    </motion.h2>
+                    <motion.p 
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.1 }}
+                        className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed"
+                    >
                         Fill out the form below or use the contact details to get in touch.
-                    </p>
+                    </motion.p>
                 </div>
                 <div className="grid md:grid-cols-2 gap-12 items-start">
                     <div className="space-y-8 animate-in fade-in slide-in-from-left-20 duration-1000">

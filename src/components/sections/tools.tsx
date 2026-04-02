@@ -1,6 +1,8 @@
+'use client';
+
 import Image from "next/image";
 import placeholderImages from "@/lib/placeholder-images.json";
-
+import { motion } from "framer-motion";
 
 const Tools = ({ tools = [] }: { tools?: any[] }) => {
   // If no tools provided, fallback to empty or handle gracefully
@@ -11,14 +13,25 @@ const Tools = ({ tools = [] }: { tools?: any[] }) => {
   return (
     <section id="tools" className="section-padding bg-background">
       <div className="container mx-auto px-4">
-        <div className="mx-auto mb-12 text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-primary md:text-4xl">
-            Tools & Technologies We Use
-          </h2>
-          <p className="mt-4 max-w-2xl mx-auto text-lg text-foreground/80">
+        <div className="mb-20 text-center">
+          <motion.h2 
+            initial={{ opacity: 0, y: -20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-4xl font-extrabold tracking-tight text-foreground md:text-5xl lg:text-6xl mb-6"
+          >
+            Tools & <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">Technologies</span>
+          </motion.h2>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed"
+          >
             We Leverage The Latest And Most Effective Tools To Build Robust,
             Scalable, And Innovative Solutions.
-          </p>
+          </motion.p>
         </div>
       </div>
       <div className="w-full overflow-hidden">

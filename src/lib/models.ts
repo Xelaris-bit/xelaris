@@ -26,7 +26,9 @@ const teamMemberSchema = new mongoose.Schema({
     name: { type: String, required: true },
     role: { type: String, required: true }, // e.g., CEO, CFO
     imageUrl: String,
-    bio: String,
+    bio: String, // Short description
+    linkedinUrl: String,
+    detailedDescription: String,
 }, { timestamps: true });
 
 const serviceSchema = new mongoose.Schema({

@@ -128,22 +128,21 @@ const ToolsGrouped = ({ tools = [] }: { tools?: Tool[] }) => {
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
-        <div className="mx-auto mb-16 text-center max-w-3xl">
+        <div className="mb-20 text-center">
           <motion.h2
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: -20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="text-4xl font-bold tracking-tight text-foreground md:text-5xl lg:text-6xl drop-shadow-md"
+            className="text-4xl font-extrabold tracking-tight text-foreground md:text-5xl lg:text-6xl mb-6"
           >
-            Digital <span className="text-primary">Ecosystem</span>
+            Digital <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">Ecosystem</span>
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="mt-6 text-lg text-muted-foreground/80 backdrop-blur-sm rounded-lg p-2 inline-block"
+            transition={{ delay: 0.1 }}
+            className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed"
           >
             We leverage a powerful suite of industry-leading tools and technologies optimized for each category.
           </motion.p>

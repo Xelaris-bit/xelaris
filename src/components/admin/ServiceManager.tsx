@@ -291,7 +291,9 @@ export default function ServiceManager({ initialData }: { initialData: any[] }) 
                             <div className="space-y-4">
                                 <div className="space-y-1.5">
                                     <Label htmlFor="image" className="text-base">Service Media</Label>
-                                    <p className="text-[0.8rem] text-muted-foreground">Upload an image, GIF, or video. Recommended pixel ratio: 16:9 (e.g., 1920x1080) for best display.</p>
+                                    <p className="text-[0.8rem] text-muted-foreground">
+                                        Upload an image, GIF, or video. <strong>Bento Grid Display:</strong> To support the asymmetrical "Our Best Services" grid, we recommend a <strong>1:1 (e.g., 1080x1080)</strong> or <strong>16:9 (e.g., 1920x1080)</strong> resolution with a center-focused subject. Our system will automatically center crop (object-cover) the image based on whether the service appears in a wide or narrow card.
+                                    </p>
                                 </div>
                                 <div className="flex gap-4 items-center">
                                     {selectedImage ? (

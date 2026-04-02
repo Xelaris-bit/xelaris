@@ -52,6 +52,17 @@ export async function getTeamMembers() {
     return JSON.parse(JSON.stringify(members));
 }
 
+export async function getTeamMemberById(id: string) {
+    if (!id) return null;
+    await connectToDatabase();
+    try {
+        const member = await TeamMember.findById(id).lean();
+        return member ? JSON.parse(JSON.stringify(member)) : null;
+    } catch (e) {
+        return null;
+    }
+}
+
 export async function updateTeamMember(prevState: any, formData: FormData) {
     await connectToDatabase();
     const id = formData.get('id') as string;
@@ -62,6 +73,8 @@ export async function updateTeamMember(prevState: any, formData: FormData) {
         role: formData.get('role'),
         imageUrl: formData.get('imageUrl'),
         bio: formData.get('bio'),
+        linkedinUrl: formData.get('linkedinUrl'),
+        detailedDescription: formData.get('detailedDescription'),
     };
 
     if (!memberId) {

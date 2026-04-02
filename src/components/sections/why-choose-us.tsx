@@ -5,6 +5,8 @@ import { BrainCircuit, Milestone, ShieldCheck, Users } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import OrbitalMenu from "../orbital-menu";
 
+import { motion } from "framer-motion";
+
 const benefits = [
   {
     icon: BrainCircuit,
@@ -38,14 +40,25 @@ const WhyChooseUs = () => {
   return (
     <section id="about" className="section-padding bg-background">
       <div className="container mx-auto px-4">
-        <div className="mx-auto mb-12 max-w-2xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-primary md:text-4xl animate-in fade-in slide-in-from-bottom-12 duration-1000">
-            Why Partner With Xelaris?
-          </h2>
-          <p className="mt-4 text-lg text-foreground/80 animate-in fade-in slide-in-from-bottom-16 duration-1000">
+        <div className="mb-20 text-center">
+          <motion.h2 
+            initial={{ opacity: 0, y: -20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-4xl font-extrabold tracking-tight text-foreground md:text-5xl lg:text-6xl mb-6"
+          >
+            Why Partner With <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">Xelaris?</span>
+          </motion.h2>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed"
+          >
             We are more than just a digital agency. We are your dedicated
             partners in innovation and success.
-          </p>
+          </motion.p>
         </div>
 
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
