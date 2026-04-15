@@ -8,6 +8,7 @@ import ScrollProgressBar from "@/components/layout/scroll-progress-bar";
 import PromoPopup from "@/components/promo-popup";
 import TechBot from "@/components/TechBot";
 import { getSiteSettings, getSiteMedia } from "@/app/admin/data-actions";
+import GlobalLoader from "@/components/ui/global-loader";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-body" });
 
@@ -60,16 +61,24 @@ export default async function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className={cn("font-body antialiased relative", inter.variable)}>
-        <ScrollProgressBar />
-        {children}
-        <Toaster />
-        <BackToTopButton />
-        <PromoPopup settings={settings} promoImage={media['promo-banner']?.data} />
-        <TechBot
-          enabled={settings.techBotEnabled ?? true}
-          videoUrl={media['techbot-video']?.data || settings.techBotVideoUrl}
-        />
+      <body 
+        className={cn("font-body antialiased relative", inter.variable)}
+        style={{
+          '--logo-size': `${settings?.logoSize ?? 32}px`,
+          '--techbot-size': `${settings?.techBotSize ?? 64}px`
+        } as React.CSSProperties}
+      >
+        <GlobalLoader>
+          <ScrollProgressBar />
+          {children}
+          <Toaster />
+          <BackToTopButton />
+          <PromoPopup settings={settings || {}} promoImage={media['promo-banner']?.data} />
+          <TechBot
+            enabled={settings?.techBotEnabled ?? true}
+            videoUrl={media['techbot-video']?.data || settings?.techBotVideoUrl}
+          />
+        </GlobalLoader>
       </body>
     </html>
   );

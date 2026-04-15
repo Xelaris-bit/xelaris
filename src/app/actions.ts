@@ -63,7 +63,7 @@ export async function handleResumeSubmission(prevState: any, formData: FormData)
 
         const { data, error } = await resend.emails.send({
             from: 'onboarding@resend.dev',
-            to: ['anshumanseoczar+resend@gmail.com'],
+            to: ['contact.xelaris@gmail.com'],
             subject: `New Resume Submission from ${name}`,
             reply_to: email,
             react: React.createElement(ResumeSubmissionEmail, {
@@ -108,10 +108,19 @@ const contactSchema = z.object({
     name: z.string().min(2, { message: "Name must be at least 2 characters." }),
     email: z.string().email({ message: "Please enter a valid email address." }).refine(email => {
         if (!email) return false;
-        const domain = email.split('@')[1];
-        return !disposableDomains.includes(domain);
+        const localPart = email.split('@')[0].toLowerCase();
+        const domain = email.split('@')[1].toLowerCase();
+        
+        // Block disposable domains
+        if (disposableDomains.includes(domain)) return false;
+
+        // Block generic/dummy local parts often used to bypass forms
+        const dummyPatterns = /^(anything|test|testing|dummy|fake|example|abc|12345|user|name|email|yourname)$/;
+        if (dummyPatterns.test(localPart)) return false;
+
+        return true;
     }, {
-        message: "Temporary or disposable email addresses are not allowed.",
+        message: "Please provide a valid, real email address.",
     }),
     phone: z.string().min(1, { message: "Mobile number is required." }).refine(isValidPhoneNumber, { message: "Please enter a valid mobile number." }),
     subject: z.string().min(5, { message: "Subject must be at least 5 characters." }),
@@ -152,7 +161,7 @@ export async function handleContactFormSubmission(prevState: any, formData: Form
     try {
         const { data, error } = await resend.emails.send({
             from: 'onboarding@resend.dev',
-            to: ['anshumanseoczar+resend@gmail.com'],
+            to: ['contact.xelaris@gmail.com'],
             subject: `New message from ${name}: ${subject}`,
             reply_to: email,
             react: React.createElement(ContactFormEmail, {

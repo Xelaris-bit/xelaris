@@ -1,30 +1,35 @@
-
 "use client";
 
-import { useInView } from "react-intersection-observer";
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 type FadeInProps = {
   children: React.ReactNode;
   className?: string;
+  delay?: number;
 };
 
-export function FadeIn({ children, className }: FadeInProps) {
-  const { ref, inView } = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  });
+export function FadeIn({ children, className, delay = 0 }: FadeInProps) {
+  const ref = useRef(null);
+  // triggerOnce: true ensures it only animates in once successfully
+  const inView = useInView(ref, { once: true, margin: "-10% 0px" });
 
   return (
-    <div
+    <motion.div
       ref={ref}
-      className={cn(
-        "transition-opacity duration-1000 ease-in-out",
-        inView ? "opacity-100" : "opacity-0",
-        className
-      )}
+      initial={{ opacity: 0, y: 40 }}
+      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+      transition={{
+        type: "spring",
+        stiffness: 80,
+        damping: 20,
+        mass: 1,
+        delay: delay,
+      }}
+      className={cn(className)}
     >
       {children}
-    </div>
+    </motion.div>
   );
 }

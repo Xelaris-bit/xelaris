@@ -54,13 +54,12 @@ const Header = ({ logoUrl }: { logoUrl?: string }) => {
         <div className="container mx-auto flex h-20 items-center justify-between px-4">
           <Link href="/" className="flex items-center gap-0.5">
             {logoUrl ? (
-              <div className="relative h-8 w-8 mr-2">
-                <img src={logoUrl} alt="Logo" className="object-contain h-full w-full" />
+              <div className="relative mr-2 flex items-center justify-center" style={{ height: 'var(--logo-size, 32px)' }}>
+                <img src={logoUrl} alt="Logo" className="object-contain h-full w-auto max-w-[200px]" />
               </div>
             ) : (
-              <Logo className="h-8 w-8" />
+              <Logo style={{ height: 'var(--logo-size, 32px)', width: 'auto' }} />
             )}
-            <span className="text-2xl font-bold text-primary">elaris</span>
           </Link>
 
           <nav className="hidden md:flex md:items-center md:gap-4 lg:gap-6">
@@ -106,10 +105,13 @@ const Header = ({ logoUrl }: { logoUrl?: string }) => {
                       onClick={handleLinkClick}
                       className="flex items-center gap-0.5"
                     >
-                      <Logo className="h-8 w-8" />
-                      <span className="text-2xl font-bold text-primary">
-                        elaris
-                      </span>
+                      {logoUrl ? (
+                        <div className="relative mr-2 flex items-center justify-center" style={{ height: 'var(--logo-size, 32px)' }}>
+                          <img src={logoUrl} alt="Logo" className="object-contain h-full w-auto max-w-[200px]" />
+                        </div>
+                      ) : (
+                        <Logo style={{ height: 'var(--logo-size, 32px)', width: 'auto' }} />
+                      )}
                     </Link>
                   </div>
                   <nav className="mt-8 flex flex-col gap-4">

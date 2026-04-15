@@ -2,7 +2,12 @@ import { Linkedin, Twitter, Youtube } from "lucide-react";
 import Link from "next/link";
 import Logo from "../icons/logo";
 
-const Footer = () => {
+import { getSiteMedia } from "@/app/admin/data-actions";
+
+const Footer = async () => {
+  const media = await getSiteMedia();
+  const logoUrl = media['logo']?.data;
+
   const navItems = [
     { name: "Services", href: "/services" },
     { name: "About Us", href: "/about" },
@@ -18,13 +23,18 @@ const Footer = () => {
   ];
 
   return (
-    <footer id="footer" className="bg-primary text-primary-foreground relative">
+    <footer id="footer" className="bg-[#071436] text-primary-foreground relative">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3 lg:grid-cols-4">
           <div className="lg:col-span-1">
             <Link href="/" className="flex items-center gap-0.5">
-              <Logo className="h-8 w-8" />
-              <span className="text-2xl font-bold">elaris</span>
+              {logoUrl ? (
+                <div className="relative mr-2 flex items-center justify-center" style={{ height: 'var(--logo-size, 32px)' }}>
+                  <img src={logoUrl} alt="Logo" className="object-contain h-full w-auto max-w-[200px]" />
+                </div>
+              ) : (
+                <Logo style={{ height: 'var(--logo-size, 32px)', width: 'auto' }} />
+              )}
             </Link>
             <p className="mt-4 text-sm text-primary-foreground/80">
               Your expert partner for innovative software solutions across multiple domains, driving excellence and growth.

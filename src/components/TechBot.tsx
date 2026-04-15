@@ -133,11 +133,15 @@ const TechBot = ({ enabled = true, videoUrl }: TechBotProps) => {
                             loop
                             muted
                             playsInline
-                            className="max-h-[200px] w-auto object-contain drop-shadow-2xl"
+                            className="w-auto object-contain drop-shadow-2xl"
+                            style={{ maxHeight: 'calc(var(--techbot-size, 64px) * 3)' }}
                         />
                     </div>
                 ) : (
-                    <div className="relative w-16 h-16 bg-gradient-to-b from-gray-100 to-gray-300 dark:from-gray-700 dark:to-gray-900 rounded-2xl shadow-xl flex items-center justify-center border border-white/20 animate-float hover:scale-105 transition-transform duration-300 ease-out overflow-hidden">
+                    <div 
+                        className="relative bg-gradient-to-b from-gray-100 to-gray-300 dark:from-gray-700 dark:to-gray-900 rounded-2xl shadow-xl flex items-center justify-center border border-white/20 animate-float hover:scale-105 transition-transform duration-300 ease-out overflow-hidden"
+                        style={{ width: 'var(--techbot-size, 64px)', height: 'var(--techbot-size, 64px)' }}
+                    >
                         {/* Antenna */}
                         <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-1 h-3 bg-gray-400 rounded-full"></div>
                         <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-2 h-2 bg-cyan-400 rounded-full animate-pulse-glow shadow-[0_0_8px_rgba(34,211,238,0.8)]"></div>

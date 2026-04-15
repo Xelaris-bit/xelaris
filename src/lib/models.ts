@@ -20,6 +20,9 @@ const siteSettingsSchema = new mongoose.Schema({
     // TechBot Settings
     techBotEnabled: { type: Boolean, default: true },
     techBotVideoUrl: { type: String, default: '' },
+    techBotSize: { type: Number, default: 64 },
+    // Logo Settings
+    logoSize: { type: Number, default: 32 },
 }, { timestamps: true });
 
 const teamMemberSchema = new mongoose.Schema({
@@ -30,6 +33,8 @@ const teamMemberSchema = new mongoose.Schema({
     linkedinUrl: String,
     detailedDescription: String,
 }, { timestamps: true });
+
+
 
 const serviceSchema = new mongoose.Schema({
     title: { type: String, required: true },
@@ -53,7 +58,6 @@ const toolSchema = new mongoose.Schema({
         type: String,
         required: true,
         default: 'Other',
-        enum: ['Software Development', 'QA & Testing', 'Digital Marketing', 'Data Analysis', 'DevOps', 'Media & Creative', 'Other']
     },
     link: String,
 }, { timestamps: true });

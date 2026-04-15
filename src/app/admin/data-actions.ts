@@ -4,6 +4,7 @@
 import connectToDatabase from '@/lib/db';
 import { SiteSettings, TeamMember, Service, Tool, Career, SiteMedia } from '@/lib/models';
 import { revalidatePath, unstable_noStore as noStore } from 'next/cache';
+import { uploadMedia } from '@/lib/cloudinary';
 
 import { logActivity } from './activity-actions';
 
@@ -37,6 +38,8 @@ export async function updateSiteSettings(prevState: any, formData: FormData) {
         // TechBot
         techBotEnabled: formData.get('techBotEnabled') === 'on',
         techBotVideoUrl: formData.get('techBotVideoUrl'),
+        techBotSize: parseInt(formData.get('techBotSize') as string || '64', 10),
+        logoSize: parseInt(formData.get('logoSize') as string || '32', 10),
     };
 
     await SiteSettings.findOneAndUpdate({}, data, { upsert: true, new: true });
@@ -68,10 +71,13 @@ export async function updateTeamMember(prevState: any, formData: FormData) {
     const id = formData.get('id') as string;
     const memberId = id === 'new' ? null : id;
 
+    const rawImageUrl = formData.get('imageUrl') as string | null;
+    const imageUrl = await uploadMedia(rawImageUrl, 'team');
+
     const data = {
         name: formData.get('name'),
         role: formData.get('role'),
-        imageUrl: formData.get('imageUrl'),
+        imageUrl: imageUrl,
         bio: formData.get('bio'),
         linkedinUrl: formData.get('linkedinUrl'),
         detailedDescription: formData.get('detailedDescription'),
@@ -85,6 +91,17 @@ export async function updateTeamMember(prevState: any, formData: FormData) {
         await logActivity('UPDATE', 'Team', `Updated team member: ${data.name}`);
     }
     revalidatePath('/about');
+    return { success: true };
+}
+
+export async function deleteTeamMember(id: string) {
+    await connectToDatabase();
+    const member = await TeamMember.findById(id);
+    if (member) {
+        await TeamMember.findByIdAndDelete(id);
+        await logActivity('DELETE', 'Team', `Deleted team member: ${member.name}`);
+        revalidatePath('/about');
+    }
     return { success: true };
 }
 
@@ -105,6 +122,10 @@ export async function getServiceBySlug(slug: string) {
 export async function saveService(prevState: any, formData: FormData) {
     await connectToDatabase();
     const id = formData.get('id') as string;
+
+    const rawImageUrl = formData.get('imageUrl') as string | null;
+    const imageUrl = await uploadMedia(rawImageUrl, 'services');
+
     const data = {
         title: formData.get('title'),
         description: formData.get('description'),
@@ -112,7 +133,7 @@ export async function saveService(prevState: any, formData: FormData) {
         process: JSON.parse(formData.get('process') as string || '[]'),
         icon: formData.get('icon'),
         slug: formData.get('slug'),
-        imageUrl: formData.get('imageUrl'),
+        imageUrl: imageUrl,
     };
 
     if (id) {
@@ -145,11 +166,22 @@ export async function getTools() {
 export async function saveTool(prevState: any, formData: FormData) {
     await connectToDatabase();
     const id = formData.get('id') as string;
+
+    let rawImageUrl = formData.get('imageUrl') as string | null;
+    const iconSlug = formData.get('icon') as string;
+
+    // Auto-fetch SimpleIcons SVG if an icon slug is specified, and no manual file upload took priority
+    if (iconSlug && (!rawImageUrl || !rawImageUrl.startsWith('data:'))) {
+        rawImageUrl = `https://cdn.simpleicons.org/${iconSlug}`;
+    }
+
+    const imageUrl = await uploadMedia(rawImageUrl, 'tools');
+
     const data = {
         name: formData.get('name'),
         description: formData.get('description'),
-        imageUrl: formData.get('imageUrl'),
-        icon: formData.get('icon'),
+        imageUrl: imageUrl,
+        icon: iconSlug,
         category: formData.get('category') || 'Other',
         link: formData.get('link'),
     };
@@ -231,11 +263,13 @@ export async function saveSiteMedia(prevState: any, formData: FormData) {
     await connectToDatabase();
     const name = formData.get('name') as string;
     const type = formData.get('type') as string;
-    const data = formData.get('data') as string; // Base64
+    const rawData = formData.get('data') as string; // Base64
 
-    if (!name || !data) {
+    if (!name || !rawData) {
         return { success: false, message: 'Missing required fields' };
     }
+
+    const data = await uploadMedia(rawData, 'sitemedia');
 
     await SiteMedia.findOneAndUpdate(
         { name },

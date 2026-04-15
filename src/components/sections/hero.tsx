@@ -2,26 +2,20 @@
 
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, PlayCircle, CheckCircle } from "lucide-react";
+import { ChevronDown, PlayCircle } from "lucide-react";
 import Link from "next/link";
+import { getIcon } from "@/lib/icons";
 
-const departments = [
-  "Software Development",
-  "eLearning Development",
-  "Data Analysis",
-  "Cloud & DevOps",
-  "3D & Multimedia",
-  "QA Testing",
-  "Digital Marketing",
-];
+// Removed mock default departments
 
-const Hero = ({ videoUrl }: { videoUrl?: string }) => {
+const Hero = ({ videoUrl, services = [] }: { videoUrl?: string; services?: any[] }) => {
+  const displayDepartments = services && services.length > 0 ? services : [];
   const [currentDeptIndex, setCurrentDeptIndex] = useState(0);
   const [animationKey, setAnimationKey] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentDeptIndex((prevIndex) => (prevIndex + 1) % departments.length);
+      setCurrentDeptIndex((prevIndex) => (prevIndex + 1) % displayDepartments.length);
       setAnimationKey(prevKey => prevKey + 1);
     }, 2000); // Change department every 2 seconds
 
@@ -51,19 +45,26 @@ const Hero = ({ videoUrl }: { videoUrl?: string }) => {
             Centre of <span className="text-accent">Excellence</span> in Technology & <span className="text-accent">Innovation</span>
           </h1>
 
-          <div className="mt-8 h-12 flex justify-center items-center">
-            <div
-              key={animationKey}
-              className="animate-in fade-in slide-in-from-bottom-8 duration-500 inline-flex items-center gap-3 rounded-full bg-background/20 px-4 py-2"
-            >
-              <div className="flex-shrink-0 bg-accent text-accent-foreground rounded-full w-6 h-6 flex items-center justify-center">
-                <CheckCircle className="h-4 w-4" />
+          {displayDepartments.length > 0 && (
+            <div className="mt-8 h-12 flex justify-center items-center">
+              <div
+                key={animationKey}
+                className="animate-in fade-in slide-in-from-bottom-8 duration-500 inline-flex items-center gap-3 rounded-full bg-background/20 px-4 py-2"
+              >
+                <div className="flex-shrink-0 bg-accent text-accent-foreground rounded-full w-6 h-6 flex items-center justify-center p-1">
+                  {(() => {
+                      const currentService = displayDepartments[currentDeptIndex];
+                      if (!currentService) return null;
+                      const IconComponent = getIcon(currentService?.icon);
+                      return IconComponent ? <IconComponent className="h-full w-full" /> : null;
+                  })()}
+                </div>
+                <p className="text-lg font-semibold text-primary-foreground">
+                  {displayDepartments[currentDeptIndex]?.title}
+                </p>
               </div>
-              <p className="text-lg font-semibold text-primary-foreground">
-                {departments[currentDeptIndex]}
-              </p>
             </div>
-          </div>
+          )}
 
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row animate-in fade-in slide-in-from-bottom-20 duration-1000">
             <Button

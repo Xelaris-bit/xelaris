@@ -26,18 +26,21 @@ import { useToast } from "@/hooks/use-toast";
 import Image from 'next/image';
 import { getIcon, iconList } from '@/lib/icons';
 
+
 export default function ServiceManager({ initialData }: { initialData: any[] }) {
     const router = useRouter();
     const [isOpen, setIsOpen] = useState(false);
     const [currentService, setCurrentService] = useState<any>(null);
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const [processSteps, setProcessSteps] = useState<{ title: string; description: string }[]>([]);
+
     const { toast } = useToast();
 
     const handleOpen = (service: any = null) => {
         setCurrentService(service);
         setSelectedImage(service?.imageUrl || null);
         setProcessSteps(service?.process || []);
+
         setIsOpen(true);
     };
 
@@ -93,6 +96,7 @@ export default function ServiceManager({ initialData }: { initialData: any[] }) 
 
         // Add process steps as JSON string
         formData.append('process', JSON.stringify(processSteps));
+
 
         const result = await saveService(null, formData);
         if (result.success) {
@@ -175,6 +179,8 @@ export default function ServiceManager({ initialData }: { initialData: any[] }) 
                             </div>
                         </div>
 
+
+
                         <div className="space-y-2">
                             <Label htmlFor="description">Short Description</Label>
                             <Textarea id="description" name="description" defaultValue={currentService?.description} required rows={3} />
@@ -235,6 +241,7 @@ export default function ServiceManager({ initialData }: { initialData: any[] }) 
                             )}
                         </div>
 
+
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2 col-span-2">
                                 <Label>Service Icon</Label>
@@ -284,7 +291,20 @@ export default function ServiceManager({ initialData }: { initialData: any[] }) 
                                             );
                                         })}
                                     </div>
-                                    <input type="hidden" name="icon" value={currentService?.icon || 'Code'} />
+                                    <div className="mt-4 space-y-2 border-t pt-4">
+                                        <Label htmlFor="customIconSlug">
+                                            Or enter a Custom Icon Slug
+                                            <a href="https://simpleicons.org/" target="_blank" rel="noreferrer" className="text-xs text-blue-500 ml-2 hover:underline">(SimpleIcons)</a>
+                                        </Label>
+                                        <Input
+                                            id="customIconSlug"
+                                            name="icon"
+                                            value={currentService?.icon || 'Code'}
+                                            onChange={(e) => setCurrentService({ ...currentService, icon: e.target.value })}
+                                            placeholder="e.g. react, docker, typescript"
+                                        />
+                                        <p className="text-xs text-muted-foreground">Type a SimpleIcons slug to use it, or click a Lucide icon above.</p>
+                                    </div>
                                 </div>
                             </div>
                             {/* Removed original icon input, using hidden input above */}

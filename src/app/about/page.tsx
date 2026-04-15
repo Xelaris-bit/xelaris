@@ -65,7 +65,7 @@ export default async function AboutPage() {
           <OurJourney />
         </FadeIn>
         <FadeIn>
-          <WhyChooseUs />
+          <WhyChooseUs logoUrl={media['logo']?.data} />
         </FadeIn>
       </main>
       <Footer />

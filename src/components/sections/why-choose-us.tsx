@@ -34,7 +34,7 @@ const benefits = [
   },
 ];
 
-const WhyChooseUs = () => {
+const WhyChooseUs = ({ logoUrl }: { logoUrl?: string }) => {
   const [activeTab, setActiveTab] = useState(0);
 
   return (
@@ -67,6 +67,7 @@ const WhyChooseUs = () => {
               benefits={benefits}
               activeTab={activeTab}
               setActiveTab={setActiveTab}
+              logoUrl={logoUrl}
             />
           </div>
           <div className="relative flex items-center justify-center animate-in fade-in slide-in-from-right-20 duration-1000">

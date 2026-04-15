@@ -21,7 +21,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { User } from 'lucide-react';
-import { updateTeamMember } from '@/app/admin/data-actions';
+import { updateTeamMember, deleteTeamMember } from '@/app/admin/data-actions';
 import { useToast } from "@/hooks/use-toast";
 import Image from 'next/image';
 
@@ -68,6 +68,16 @@ export default function TeamManager({ initialData }: { initialData: any[] }) {
         }
     };
 
+    const handleDelete = async (id: string) => {
+        if (window.confirm('Are you sure you want to completely remove this team member?')) {
+            const result = await deleteTeamMember(id);
+            if (result.success) {
+                toast({ title: "Deleted", description: "Team member has been removed." });
+                router.refresh();
+            }
+        }
+    };
+
     return (
         <div>
             <div className="flex justify-between items-center mb-4">
@@ -103,10 +113,9 @@ export default function TeamManager({ initialData }: { initialData: any[] }) {
                                     <Button variant="ghost" size="icon" onClick={() => handleOpen(member)}>
                                         <Edit className="h-4 w-4" />
                                     </Button>
-                                    {/* Delete functionality not visible in screenshot/snippet but assumed present or out of scope for now?
-                      The snippet showed 'getSiteSettings, getTeamMembers...' but delete action isn't imported here?
-                      Checking data-actions later if needed. For now sticking to update/add. 
-                  */}
+                                    <Button variant="ghost" size="icon" className="text-red-500 hover:text-red-700" onClick={() => handleDelete(member._id)}>
+                                        <Trash2 className="h-4 w-4" />
+                                    </Button>
                                 </TableCell>
                             </TableRow>
                         ))}

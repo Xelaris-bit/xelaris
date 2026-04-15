@@ -7,12 +7,13 @@ import Image from "next/image";
 
 // Predefined categories order
 const CATEGORY_ORDER = [
-  "Software Development",
-  "QA & Testing",
+  "Software",
+  "eLearning",
+  "Multimedia",
+  "QA/Testing",
   "Digital Marketing",
   "Data Analysis",
   "DevOps",
-  "Media & Creative",
   "Other"
 ];
 
@@ -97,13 +98,14 @@ const ToolsGrouped = ({ tools = [] }: { tools?: Tool[] }) => {
       groups[category].push(tool);
     });
 
-    // Sort categories based on predefined order
-    return CATEGORY_ORDER
-      .filter(cat => groups[cat] && groups[cat].length > 0)
-      .map(cat => ({
-        category: cat,
-        items: groups[cat]
-      }));
+    // Ensure we include custom categories not in CATEGORY_ORDER
+    const orderedCategories = CATEGORY_ORDER.filter(cat => groups[cat] && groups[cat].length > 0);
+    const customCategories = Object.keys(groups).filter(cat => !CATEGORY_ORDER.includes(cat));
+
+    return [...orderedCategories, ...customCategories].map(cat => ({
+      category: cat,
+      items: groups[cat]
+    }));
   }, [tools]);
 
   const [activeCategory, setActiveCategory] = useState<string>(groupedTools[0]?.category || "");

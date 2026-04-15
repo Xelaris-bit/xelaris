@@ -1,4 +1,6 @@
-const Logo = ({ className }: { className?: string }) => (
+import React from 'react';
+
+const Logo = ({ className, ...props }: React.SVGProps<SVGSVGElement>) => (
   <svg
     width="32"
     height="32"
@@ -6,6 +8,7 @@ const Logo = ({ className }: { className?: string }) => (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     className={className}
+    {...props}
   >
     <defs>
       <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">

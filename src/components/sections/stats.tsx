@@ -24,7 +24,7 @@ const stats = [
 
 const Stats = () => {
   return (
-    <div className="bg-primary py-20 text-primary-foreground">
+    <div className="bg-[#071436] py-20 text-primary-foreground">
       <div className="container mx-auto px-4">
         <div className="mx-auto mb-12 max-w-3xl text-center">
           <h2 className="text-3xl font-bold tracking-tight text-primary-foreground md:text-4xl animate-in fade-in slide-in-from-bottom-12 duration-1000">

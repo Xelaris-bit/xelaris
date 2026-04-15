@@ -2,10 +2,21 @@
 import * as LucideIcons from 'lucide-react';
 import { LucideIcon } from 'lucide-react';
 
-export function getIcon(iconName: string): LucideIcon {
+export function getIcon(iconName: string): any {
+    if (!iconName) return LucideIcons.HelpCircle;
+    
     // @ts-ignore - Dynamic access to icons
     const Icon = LucideIcons[iconName];
-    return Icon || LucideIcons.HelpCircle; // Default to HelpCircle if not found
+    if (Icon) return Icon;
+
+    return ({ className, ...props }: any) => (
+        <img 
+            src={`https://cdn.simpleicons.org/${iconName}`} 
+            alt={iconName} 
+            className={className}
+            style={{ width: '1em', height: '1em', ...props.style }}
+        />
+    );
 }
 
 export const iconList = [

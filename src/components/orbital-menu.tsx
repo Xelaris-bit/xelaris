@@ -14,12 +14,14 @@ type OrbitalMenuProps = {
   benefits: Benefit[];
   activeTab: number;
   setActiveTab: (index: number) => void;
+  logoUrl?: string;
 };
 
 const OrbitalMenu = ({
   benefits,
   activeTab,
   setActiveTab,
+  logoUrl,
 }: OrbitalMenuProps) => {
   const centerCircleSize = 120;
   const orbitRadius = 150;
@@ -38,14 +40,17 @@ const OrbitalMenu = ({
 
       {/* Center Circle */}
       <div
-        className="absolute flex items-center justify-center rounded-full bg-primary/10 text-primary gap-0.5"
+        className="absolute flex items-center justify-center rounded-full bg-primary/10 text-primary gap-0.5 p-4"
         style={{
           width: centerCircleSize,
           height: centerCircleSize,
         }}
       >
-        <Logo className="h-8 w-8" />
-        <span className="text-2xl font-bold text-primary">elaris</span>
+        {logoUrl ? (
+          <img src={logoUrl} alt="Logo" className="object-contain w-full h-full max-h-[80px]" />
+        ) : (
+          <Logo style={{ height: 'var(--logo-size, 32px)', width: 'auto' }} />
+        )}
       </div>
 
       {/* Orbiting Items */}
@@ -66,13 +71,13 @@ const OrbitalMenu = ({
               "orbiting-item"
             )}
             style={{
-                width: itemSize,
-                height: itemSize,
-                animationDelay: `${-20 * (index / benefits.length)}s`,
-                '--orbit-radius': `${orbitRadius}px`,
-                transform: `translate(-50%, -50%) translate(${x}px, ${y}px)`
-            }}
-            
+              width: itemSize,
+              height: itemSize,
+              animationDelay: `${-20 * (index / benefits.length)}s`,
+              '--orbit-radius': `${orbitRadius}px`,
+              transform: `translate(-50%, -50%) translate(${x}px, ${y}px)`
+            } as React.CSSProperties}
+
           >
             <benefit.icon
               className={cn(

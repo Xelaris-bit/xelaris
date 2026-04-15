@@ -88,6 +88,7 @@ export default function ContactForm() {
           onChange={setPhoneValue}
           international
           countryCallingCodeEditable={false}
+          limitMaxLength={true}
           suppressHydrationWarning
         />
         {state.errors?.phone && <p className="text-sm font-medium text-destructive">{state.errors.phone[0]}</p>}

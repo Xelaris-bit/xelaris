@@ -26,7 +26,7 @@ export default async function Home() {
     <div className="flex min-h-screen flex-col">
       <Header logoUrl={media['logo']?.data} />
       <main className="flex-1">
-        <Hero videoUrl={media['home-hero-video']?.data} />
+        <Hero videoUrl={media['home-hero-video']?.data} services={services} />
         <FadeIn>
           <WhoWeAre />
         </FadeIn>
@@ -44,7 +44,7 @@ export default async function Home() {
         </FadeIn>
 
         <FadeIn>
-          <WhyChooseUs />
+          <WhyChooseUs logoUrl={media['logo']?.data} />
         </FadeIn>
 
         <FadeIn>

@@ -96,8 +96,11 @@ export default function SettingsForm({ initialData }: { initialData: any }) {
                             <Label htmlFor="address">Address</Label>
                             <Input id="address" name="address" defaultValue={initialData?.address} suppressHydrationWarning />
                         </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="logoSize">Logo Size (Height in px)</Label>
+                            <Input id="logoSize" name="logoSize" type="number" defaultValue={initialData?.logoSize ?? 32} suppressHydrationWarning />
+                        </div>
                     </div>
-
                     <div className="space-y-2">
                         <h3 className="font-semibold">Social Media Links</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -137,6 +140,11 @@ export default function SettingsForm({ initialData }: { initialData: any }) {
                                     name="techBotEnabled"
                                     defaultChecked={initialData?.techBotEnabled ?? true}
                                 />
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="techBotSize">TechBot Size (Width/Height in px)</Label>
+                                <Input id="techBotSize" name="techBotSize" type="number" defaultValue={initialData?.techBotSize ?? 64} suppressHydrationWarning />
+                                <p className="text-xs text-muted-foreground">Sets the display size for the TechBot icon. Default is 64.</p>
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="techBotVideoFile">Upload Video File (Overrides URL)</Label>

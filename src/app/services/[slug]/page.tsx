@@ -1,4 +1,3 @@
-
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
 import Image from 'next/image';
@@ -17,10 +16,10 @@ function IconByName({ name, className }: { name: string; className?: string }) {
   return Icon ? <Icon className={className} /> : <LucideIcons.Activity className={className} />;
 }
 
-export default async function ServicePage({ params }: { params: { slug: string } }) {
+export default async function ServicePage({ params }: { params: Promise<{ slug: string }> }) {
   // Await params if necessary in newer Next.js versions, but here it is usually synchronous object in page props
   // However, ensuring we treat it as potentially async is safe or just accessing properties
-  const { slug } = params;
+  const { slug } = await params;
 
   const [service, media] = await Promise.all([
     getServiceBySlug(slug),
@@ -42,7 +41,7 @@ export default async function ServicePage({ params }: { params: { slug: string }
         <FadeIn>
           <section className="relative h-[60vh] w-full bg-primary text-primary-foreground group overflow-hidden">
             <div className="absolute inset-0">
-              {serviceImage.startsWith('data:video/') ? (
+              {serviceImage.startsWith('data:video/') || serviceImage.includes('.mp4') ? (
                 <video
                   src={serviceImage}
                   autoPlay
@@ -69,7 +68,7 @@ export default async function ServicePage({ params }: { params: { slug: string }
                   <IconByName name={service.icon || 'Code'} className="h-12 w-12" />
                 </div>
                 <h1 className="text-4xl font-bold md:text-5xl">{service.title}</h1>
-                <p className="mt-4 max-w-2xl mx-auto text-lg text-primary-foreground/90">
+                <p className="mt-4 max-w-2xl mx-auto text-lg text-primary-foreground/90 leading-relaxed">
                   {service.description}
                 </p>
               </div>
