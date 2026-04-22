@@ -54,7 +54,7 @@ const Header = ({ logoUrl }: { logoUrl?: string }) => {
         <div className="container mx-auto flex h-20 items-center justify-between px-4">
           <Link href="/" className="flex items-center gap-0.5">
             {logoUrl ? (
-              <div className="relative h-8 w-8 mr-2">
+              <div className="relative h-full w-8 mr-full">
                 <img src={logoUrl} alt="Logo" className="object-contain h-full w-full" />
               </div>
             ) : (
