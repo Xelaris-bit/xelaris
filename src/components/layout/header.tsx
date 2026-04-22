@@ -52,17 +52,32 @@ const Header = ({ logoUrl }: { logoUrl?: string }) => {
         )}
       >
         <div className="container mx-auto flex h-20 items-center justify-between px-4">
-          <Link href="/" className="flex items-center gap-0.5">
+          {/* <Link href="/" className="flex items-center gap-0.5">
             {logoUrl ? (
-              <div className="relative h-full w-8 mr-full">
+              <div className="relative h-full w-full mr-2">
                 <img src={logoUrl} alt="Logo" className="object-contain h-full w-full" />
               </div>
             ) : (
               <Logo className="h-full w-full" />
             )}
-            {/* <span className="text-2xl font-bold text-primary">elaris</span> */}
-          </Link>
+            {<span className="text-2xl font-bold text-primary">elaris</span>}
+          </Link> */}
+          <Link href="/" className="flex items-center gap-0.5">
+  {logoUrl ? (
+    <div className="mr-2">
+      <img
+        src={logoUrl}
+        alt="Logo"
+        className="object-contain max-h-10 w-auto"
+      />
+    </div>
+  ) : (
+    <Logo className="h-10 w-10" />
+  )}
+  {/* <span className="text-2xl font-bold text-primary">elaris</span> */}
+</Link>
 
+          
           <nav className="hidden md:flex md:items-center md:gap-4 lg:gap-6">
             {navItems.map((item) => (
               <Link
