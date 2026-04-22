@@ -58,9 +58,9 @@ const Header = ({ logoUrl }: { logoUrl?: string }) => {
                 <img src={logoUrl} alt="Logo" className="object-contain h-full w-full" />
               </div>
             ) : (
-              <Logo className="h-8 w-8" />
+              <Logo className="h-10 w-10" />
             )}
-            <span className="text-2xl font-bold text-primary">elaris</span>
+            {/* <span className="text-2xl font-bold text-primary">elaris</span> */}
           </Link>
 
           <nav className="hidden md:flex md:items-center md:gap-4 lg:gap-6">
