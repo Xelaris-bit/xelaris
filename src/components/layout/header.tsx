@@ -58,7 +58,7 @@ const Header = ({ logoUrl }: { logoUrl?: string }) => {
                 <img src={logoUrl} alt="Logo" className="object-contain h-full w-full" />
               </div>
             ) : (
-              <Logo className="h-10 w-10" />
+              <Logo className="h-full w-full" />
             )}
             {/* <span className="text-2xl font-bold text-primary">elaris</span> */}
           </Link>
