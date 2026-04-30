@@ -1,0 +1,17 @@
+src/components/admin/ServiceSectionsBuilder.tsx(142,19): error TS2345: Argument of type '(items: any) => unknown[]' is not assignable to parameter of type 'any[]'.
+src/components/admin/ServiceSectionsBuilder.tsx(142,20): error TS7006: Parameter 'items' implicitly has an 'any' type.
+src/components/admin/ServiceSectionsBuilder.tsx(143,42): error TS7006: Parameter 'item' implicitly has an 'any' type.
+src/components/admin/ServiceSectionsBuilder.tsx(144,42): error TS7006: Parameter 'item' implicitly has an 'any' type.
+src/components/admin/ServiceSectionsBuilder.tsx(148,51): error TS2698: Spread types may only be created from object types.
+src/components/orbital-menu.tsx(72,17): error TS2353: Object literal may only specify known properties, and ''--orbit-radius'' does not exist in type 'Properties<string | number, string & {}>'.
+src/components/resume-submission-form.tsx(55,32): error TS2339: Property 'name' does not exist on type '{}'.
+src/components/resume-submission-form.tsx(55,106): error TS2339: Property 'name' does not exist on type '{}'.
+src/components/resume-submission-form.tsx(66,33): error TS2339: Property 'email' does not exist on type '{}'.
+src/components/resume-submission-form.tsx(66,108): error TS2339: Property 'email' does not exist on type '{}'.
+src/components/resume-submission-form.tsx(77,32): error TS2339: Property 'resume' does not exist on type '{}'.
+src/components/resume-submission-form.tsx(77,108): error TS2339: Property 'resume' does not exist on type '{}'.
+src/lib/services.tsx(24,14): error TS2322: Type '{ icon: Element | undefined; id: string; slug: string; title: string; description: string; longDescription: string; }[]' is not assignable to type 'Service[]'.
+  Type '{ icon: JSX.Element | undefined; id: string; slug: string; title: string; description: string; longDescription: string; }' is not assignable to type 'Service'.
+    Types of property 'icon' are incompatible.
+      Type 'Element | undefined' is not assignable to type 'ReactElement<any, string | JSXElementConstructor<any>>'.
+        Type 'undefined' is not assignable to type 'ReactElement<any, string | JSXElementConstructor<any>>'.
