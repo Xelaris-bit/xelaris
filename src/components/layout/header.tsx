@@ -54,11 +54,11 @@ const Header = ({ logoUrl }: { logoUrl?: string }) => {
         <div className="container mx-auto flex h-20 items-center justify-between px-4">
           <Link href="/" className="flex items-center gap-0.5">
             {logoUrl ? (
-              <div className="relative mr-2 flex items-center justify-center" style={{ height: 'var(--logo-size, 32px)' }}>
-                <img src={logoUrl} alt="Logo" className="object-contain h-full w-auto max-w-[200px]" />
+              <div className="relative mr-2 flex items-center justify-center h-10 sm:h-12">
+                <img src={logoUrl} alt="Logo" className="object-contain h-full w-auto max-w-[160px] sm:max-w-[200px]" />
               </div>
             ) : (
-              <Logo style={{ height: 'var(--logo-size, 32px)', width: 'auto' }} />
+              <Logo className="h-10 sm:h-12 w-auto" />
             )}
           </Link>
 
@@ -106,11 +106,11 @@ const Header = ({ logoUrl }: { logoUrl?: string }) => {
                       className="flex items-center gap-0.5"
                     >
                       {logoUrl ? (
-                        <div className="relative mr-2 flex items-center justify-center" style={{ height: 'var(--logo-size, 32px)' }}>
-                          <img src={logoUrl} alt="Logo" className="object-contain h-full w-auto max-w-[200px]" />
+                        <div className="relative mr-2 flex items-center justify-center h-10">
+                          <img src={logoUrl} alt="Logo" className="object-contain h-full w-auto max-w-[160px]" />
                         </div>
                       ) : (
-                        <Logo style={{ height: 'var(--logo-size, 32px)', width: 'auto' }} />
+                        <Logo className="h-10 w-auto" />
                       )}
                     </Link>
                   </div>

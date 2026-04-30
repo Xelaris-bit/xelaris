@@ -8,7 +8,7 @@ import { getSiteSettings, getSiteMedia } from "@/app/admin/data-actions";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Contact Xelaris - Achieve Digital Excellence",
+  title: "Connect With Our Experts",
   description: "Ready to innovate? Contact Xelaris, your Centre of Excellence for Software, eLearning, Multimedia, and Data solutions.",
 };
 

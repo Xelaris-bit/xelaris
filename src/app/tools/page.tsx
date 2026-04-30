@@ -5,6 +5,12 @@ import PageHero from "@/components/sections/page-hero";
 import { FadeIn } from "@/components/fade-in";
 
 import { getSiteMedia, getTools } from "@/app/admin/data-actions";
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: "Our Advanced Tech Stack",
+  description: "Explore the cutting-edge tools and technologies we use at Xelaris to build world-class digital products and solutions.",
+};
 
 export const dynamic = 'force-dynamic';
 

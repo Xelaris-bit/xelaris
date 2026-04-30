@@ -15,6 +15,7 @@ const TechBot = ({ enabled = true, videoUrl }: TechBotProps) => {
     const [greetingVisible, setGreetingVisible] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
     const [mounted, setMounted] = useState(false);
+    const [videoError, setVideoError] = useState(false);
 
     useEffect(() => {
         setMounted(true);
@@ -41,7 +42,7 @@ const TechBot = ({ enabled = true, videoUrl }: TechBotProps) => {
             clearTimeout(initialTimer);
             clearInterval(interval);
         };
-    }, [isOpen]);
+    }, [isOpen, mounted]);
 
     const toggleOpen = () => {
         setIsOpen(!isOpen);
@@ -119,28 +120,37 @@ const TechBot = ({ enabled = true, videoUrl }: TechBotProps) => {
 
             {/* Robot Container */}
             <div
-                className="relative group cursor-pointer"
+                className="relative group cursor-pointer transition-transform"
+                style={{ transform: 'scale(0.85)', transformOrigin: 'bottom right' }}
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
                 onClick={toggleOpen}
             >
                 {/* Hover Glow Effect */}
-                {videoUrl ? (
-                    <div className="relative cursor-pointer hover:scale-105 transition-transform duration-300 ease-out z-10">
+                {videoUrl && videoUrl.trim() !== '' && videoUrl !== 'null' && !videoError ? (
+                    <div
+                        className="relative cursor-pointer hover:scale-105 transition-transform duration-300 ease-out z-10 flex items-center justify-center"
+                        style={{
+                            width: 'calc(var(--techbot-size, 64px) * 2.5)',
+                            height: 'calc(var(--techbot-size, 64px) * 2.5)',
+                            minWidth: '100px',
+                            minHeight: '100px'
+                        }}
+                    >
                         <video
                             src={videoUrl}
                             autoPlay
                             loop
                             muted
                             playsInline
-                            className="w-auto object-contain drop-shadow-2xl"
-                            style={{ maxHeight: 'calc(var(--techbot-size, 64px) * 3)' }}
+                            onError={() => setVideoError(true)}
+                            className="w-full h-full object-contain drop-shadow-2xl z-10"
                         />
                     </div>
                 ) : (
-                    <div 
+                    <div
                         className="relative bg-gradient-to-b from-gray-100 to-gray-300 dark:from-gray-700 dark:to-gray-900 rounded-2xl shadow-xl flex items-center justify-center border border-white/20 animate-float hover:scale-105 transition-transform duration-300 ease-out overflow-hidden"
-                        style={{ width: 'var(--techbot-size, 64px)', height: 'var(--techbot-size, 64px)' }}
+                        style={{ width: 'var(--techbot-size, 64px)', height: 'var(--techbot-size, 64px)', minWidth: '64px', minHeight: '64px' }}
                     >
                         {/* Antenna */}
                         <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-1 h-3 bg-gray-400 rounded-full"></div>

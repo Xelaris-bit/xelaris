@@ -13,6 +13,7 @@ import { Loader2, Upload } from 'lucide-react';
 
 const MEDIA_SLOTS = [
     { id: 'logo', label: 'Company Logo', type: 'logo' },
+    { id: 'footer-logo', label: 'Footer Logo (Required for different footer)', type: 'logo' },
     { id: 'home-hero-video', label: 'Home Page Hero Video (MP4)', type: 'video' },
     { id: 'home-hero-bg', label: 'Home Page Hero Background (Fallback)', type: 'image' },
     { id: 'services-hero', label: 'Services Page Hero Image', type: 'image' },

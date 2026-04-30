@@ -44,7 +44,7 @@ export async function updateSiteSettings(prevState: any, formData: FormData) {
 
     await SiteSettings.findOneAndUpdate({}, data, { upsert: true, new: true });
     await logActivity('UPDATE', 'Site Settings', 'Updated general site settings');
-    revalidatePath('/');
+    revalidatePath('/', 'layout');
     return { success: true };
 }
 
@@ -90,7 +90,7 @@ export async function updateTeamMember(prevState: any, formData: FormData) {
         await TeamMember.findByIdAndUpdate(memberId, data);
         await logActivity('UPDATE', 'Team', `Updated team member: ${data.name}`);
     }
-    revalidatePath('/about');
+    revalidatePath('/', 'layout');
     return { success: true };
 }
 
@@ -100,7 +100,7 @@ export async function deleteTeamMember(id: string) {
     if (member) {
         await TeamMember.findByIdAndDelete(id);
         await logActivity('DELETE', 'Team', `Deleted team member: ${member.name}`);
-        revalidatePath('/about');
+        revalidatePath('/', 'layout');
     }
     return { success: true };
 }
@@ -143,7 +143,7 @@ export async function saveService(prevState: any, formData: FormData) {
         await Service.create(data);
         await logActivity('CREATE', 'Service', `Created new service: ${data.title}`);
     }
-    revalidatePath('/services');
+    revalidatePath('/', 'layout');
     return { success: true };
 }
 
@@ -152,7 +152,7 @@ export async function deleteService(id: string) {
     const service = await Service.findById(id);
     await Service.findByIdAndDelete(id);
     await logActivity('DELETE', 'Service', `Deleted service: ${service?.title || id}`);
-    revalidatePath('/services');
+    revalidatePath('/', 'layout');
     return { success: true };
 }
 
@@ -193,7 +193,7 @@ export async function saveTool(prevState: any, formData: FormData) {
         await Tool.create(data);
         await logActivity('CREATE', 'Tool', `Created new tool: ${data.name}`);
     }
-    revalidatePath('/');
+    revalidatePath('/', 'layout');
     return { success: true };
 }
 
@@ -202,7 +202,7 @@ export async function deleteTool(id: string) {
     const tool = await Tool.findById(id);
     await Tool.findByIdAndDelete(id);
     await logActivity('DELETE', 'Tool', `Deleted tool: ${tool?.name || id}`);
-    revalidatePath('/');
+    revalidatePath('/', 'layout');
     return { success: true };
 }
 
@@ -233,7 +233,7 @@ export async function saveCareer(prevState: any, formData: FormData) {
         await Career.create(data);
         await logActivity('CREATE', 'Career', `Created new career: ${data.title}`);
     }
-    revalidatePath('/careers');
+    revalidatePath('/', 'layout');
     return { success: true };
 }
 
@@ -242,7 +242,7 @@ export async function deleteCareer(id: string) {
     const career = await Career.findById(id);
     await Career.findByIdAndDelete(id);
     await logActivity('DELETE', 'Career', `Deleted career: ${career?.title || id}`);
-    revalidatePath('/careers');
+    revalidatePath('/', 'layout');
     return { success: true };
 }
 
@@ -278,6 +278,6 @@ export async function saveSiteMedia(prevState: any, formData: FormData) {
     );
 
     await logActivity('UPDATE', 'Media', `Updated media: ${name}`);
-    revalidatePath('/');
+    revalidatePath('/', 'layout');
     return { success: true };
 }

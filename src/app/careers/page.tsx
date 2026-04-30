@@ -6,6 +6,12 @@ import { Archive } from 'lucide-react';
 import { FadeIn } from '@/components/fade-in';
 import ResumeSubmissionForm from '@/components/resume-submission-form';
 import PageHero from '@/components/sections/page-hero';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: "Build Your Future With Us",
+  description: "Join our team of passionate experts at Xelaris and help us shape the future of technology and software quality.",
+};
 
 import { getCareers, getSiteMedia } from "@/app/admin/data-actions";
 

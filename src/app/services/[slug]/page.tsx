@@ -7,7 +7,24 @@ import * as LucideIcons from 'lucide-react';
 import { notFound } from 'next/navigation';
 import { FadeIn } from '@/components/fade-in';
 import { getServiceBySlug, getSiteMedia } from '@/app/admin/data-actions';
-import { cn } from '@/lib/utils'; // Assuming cn utility exists
+import { cn } from '@/lib/utils';
+import type { Metadata } from 'next';
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const service = await getServiceBySlug(slug);
+
+  if (!service) {
+    return {
+      title: "Service Not Found",
+    };
+  }
+
+  return {
+    title: service.title,
+    description: service.description,
+  };
+}
 
 export const dynamic = 'force-dynamic';
 

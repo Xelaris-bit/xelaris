@@ -2,17 +2,27 @@ import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import PageHero from "@/components/sections/page-hero";
 import { FadeIn } from "@/components/fade-in";
+import { getSiteMedia } from "@/app/admin/data-actions";
+import type { Metadata } from 'next';
 
-export default function PrivacyPolicyPage() {
+export const metadata: Metadata = {
+  title: "Privacy Policy",
+  description: "Learn how Xelaris collects, uses, and protects your data. Your privacy and trust are our top priorities.",
+};
+
+export default async function PrivacyPolicyPage() {
+  const media = await getSiteMedia();
+  
   return (
     <div className="flex min-h-screen flex-col">
-      <Header />
+      <Header logoUrl={media['logo']?.data} />
       <main className="flex-1">
         <FadeIn>
           <PageHero
             title="Privacy Policy"
             subtitle="Your Privacy Is Important To Us. It Is Xelaris' Policy To Respect Your Privacy Regarding Any Information We May Collect From You Across Our Website."
             imageId="privacy-hero"
+            customImageUrl={media['privacy-hero']?.data}
           />
         </FadeIn>
         <FadeIn>

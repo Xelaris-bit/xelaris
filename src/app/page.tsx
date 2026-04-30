@@ -12,6 +12,12 @@ import OurJourney from "@/components/sections/our-journey";
 import Stats from "@/components/sections/stats";
 import { FadeIn } from "@/components/fade-in";
 import { getServices, getTools, getSiteMedia } from "@/app/admin/data-actions";
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: "Innovation & Technology Excellence",
+  description: "Xelaris is a Centre of Excellence delivering end-to-end solutions in Software Development, eLearning, 3D & Multimedia, Digital Marketing, and Data Analysis.",
+};
 
 export const dynamic = 'force-dynamic'; // Ensure we fetch fresh data
 

@@ -11,19 +11,21 @@ import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
 
-export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
-    const member = await getTeamMemberById(params.id);
-    if (!member) return { title: 'Leader Not Found | Xelaris' };
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+    const { id } = await params;
+    const member = await getTeamMemberById(id);
+    if (!member) return { title: 'Leader Not Found' };
 
     return {
-        title: `${member.name} - ${member.role} | Xelaris`,
+        title: `${member.name} - ${member.role}`,
         description: member.bio || `Profile of ${member.name}, ${member.role} at Xelaris.`,
     };
 }
 
-export default async function LeaderPage({ params }: { params: { id: string } }) {
+export default async function LeaderPage({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params;
     const [member, media] = await Promise.all([
-        getTeamMemberById(params.id),
+        getTeamMemberById(id),
         getSiteMedia()
     ]);
 

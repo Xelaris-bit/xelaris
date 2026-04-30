@@ -6,7 +6,7 @@ import { getSiteMedia } from "@/app/admin/data-actions";
 
 const Footer = async () => {
   const media = await getSiteMedia();
-  const logoUrl = media['logo']?.data;
+  const logoUrl = media['footer-logo']?.data || media['logo']?.data;
 
   const navItems = [
     { name: "Services", href: "/services" },
@@ -27,13 +27,13 @@ const Footer = async () => {
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3 lg:grid-cols-4">
           <div className="lg:col-span-1">
-            <Link href="/" className="flex items-center gap-0.5">
+            <Link href="/" className="flex items-center gap-0.5 mb-2">
               {logoUrl ? (
-                <div className="relative mr-2 flex items-center justify-center" style={{ height: 'var(--logo-size, 32px)' }}>
+                <div className="relative mr-2 flex items-start justify-start h-12 sm:h-16">
                   <img src={logoUrl} alt="Logo" className="object-contain h-full w-auto max-w-[200px]" />
                 </div>
               ) : (
-                <Logo style={{ height: 'var(--logo-size, 32px)', width: 'auto' }} />
+                <Logo className="h-12 sm:h-16 w-auto" />
               )}
             </Link>
             <p className="mt-4 text-sm text-primary-foreground/80">
@@ -71,7 +71,7 @@ const Footer = async () => {
                 >
                   89, Kulasukarpada, Cuttack, Odisha, India, 754209
                 </a>
-                </li>
+              </li>
               <li className="space-y-2">
                 <a
                   href="mailto:contact.xelaris@gmail.com"
@@ -105,8 +105,8 @@ const Footer = async () => {
                     {social.href.includes("twitter")
                       ? "Twitter"
                       : social.href.includes("linkedin")
-                      ? "LinkedIn"
-                      : "YouTube"}
+                        ? "LinkedIn"
+                        : "YouTube"}
                   </span>
                 </a>
               ))}

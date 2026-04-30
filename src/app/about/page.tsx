@@ -25,7 +25,7 @@ import { getTeamMembers, getSiteMedia } from "@/app/admin/data-actions";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "About Us - Xelaris Centre of Excellence",
+  title: "Leading the Way in Digital Excellence",
   description: "Founded by passionate experts, Xelaris empowers businesses to achieve excellence through creativity, technology, and strategy. Learn about our journey and mission.",
 };
 

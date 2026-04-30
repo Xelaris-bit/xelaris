@@ -10,7 +10,7 @@ import { getServices, getSiteMedia } from "@/app/admin/data-actions";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Our Services - Xelaris End-to-End Solutions",
+  title: "End-to-End Digital Solutions",
   description: "Discover our end-to-end solutions in Software Development, eLearning, 3D & Multimedia, Digital Marketing, and Data Analysis. We ensure your organization stays ahead.",
 };
 

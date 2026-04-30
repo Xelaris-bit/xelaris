@@ -13,7 +13,10 @@ import GlobalLoader from "@/components/ui/global-loader";
 const inter = Inter({ subsets: ["latin"], variable: "--font-body" });
 
 export const metadata: Metadata = {
-  title: "Xelaris - Centre of Excellence in Technology & Innovation",
+  title: {
+    default: "Xelaris - Centre of Excellence in Technology & Innovation",
+    template: "Xelaris | %s"
+  },
   description:
     "Xelaris is a Centre of Excellence delivering end-to-end solutions in Software Development, eLearning, 3D & Multimedia, Digital Marketing, and Data Analysis. We empower businesses to achieve excellence by combining creativity, technology, and strategy.",
   keywords: [
@@ -61,7 +64,7 @@ export default async function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body 
+      <body
         className={cn("font-body antialiased relative", inter.variable)}
         style={{
           '--logo-size': `${settings?.logoSize ?? 32}px`,
