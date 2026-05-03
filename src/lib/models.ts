@@ -6,6 +6,13 @@ const siteSettingsSchema = new mongoose.Schema({
     contactEmail: String,
     phoneNumber: String,
     address: String,
+    addresses: [{
+        addressLine1: String,
+        addressLine2: String,
+        mapsUrl: String,
+    }],
+    contactEmails: [String],
+    phoneNumbers: [String],
     facebookUrl: String,
     twitterUrl: String,
     linkedinUrl: String,
@@ -44,9 +51,16 @@ const serviceSchema = new mongoose.Schema({
         title: { type: String, required: true },
         description: { type: String, required: true },
     }], // Array of process steps
+    offerings: [{
+        title: { type: String, required: true },
+        description: { type: String, required: true },
+        icon: String, // lucide icon name
+        customIconUrl: String, // cloudinary url if uploaded
+    }], // Array of sub-services / offerings
     icon: String,
     slug: { type: String, required: true, unique: true },
     imageUrl: String,
+    aboutImageUrl: String,
 }, { timestamps: true });
 
 const toolSchema = new mongoose.Schema({
@@ -94,6 +108,11 @@ const managerSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 // Check if models exist before compiling to prevent OverwriteModelError in hot-reload
+// To prevent strict schema drops during hot-reloads of new fields, we delete the cached model in development.
+if (process.env.NODE_ENV !== 'production') {
+    delete mongoose.models.Service;
+}
+
 export const SiteSettings = mongoose.models.SiteSettings || mongoose.model('SiteSettings', siteSettingsSchema);
 export const TeamMember = mongoose.models.TeamMember || mongoose.model('TeamMember', teamMemberSchema);
 export const Service = mongoose.models.Service || mongoose.model('Service', serviceSchema);

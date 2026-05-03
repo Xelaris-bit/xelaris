@@ -15,7 +15,7 @@ import { services as servicesData } from '@/lib/services-data';
 export interface Service {
   id: string;
   slug: string;
-  icon: ReactElement;
+  icon?: ReactElement;
   title: string;
   description: string;
   longDescription: string;

@@ -6,15 +6,15 @@ import { SiteSettings, TeamMember, Service, Tool, Career, SiteMedia } from '@/li
 import { revalidatePath, unstable_noStore as noStore } from 'next/cache';
 import { uploadMedia } from '@/lib/cloudinary';
 
+import { cache } from 'react';
 import { logActivity } from './activity-actions';
 
 // --- Site Settings ---
-export async function getSiteSettings() {
-    noStore();
+export const getSiteSettings = cache(async () => {
     await connectToDatabase();
     const settings = await SiteSettings.findOne().lean();
     return JSON.parse(JSON.stringify(settings));
-}
+});
 
 export async function updateSiteSettings(prevState: any, formData: FormData) {
     await connectToDatabase();
@@ -24,6 +24,9 @@ export async function updateSiteSettings(prevState: any, formData: FormData) {
         contactEmail: formData.get('contactEmail'),
         phoneNumber: formData.get('phoneNumber'),
         address: formData.get('address'),
+        addresses: JSON.parse(formData.get('addresses') as string || '[]'),
+        contactEmails: JSON.parse(formData.get('contactEmails') as string || '[]'),
+        phoneNumbers: JSON.parse(formData.get('phoneNumbers') as string || '[]'),
         facebookUrl: formData.get('facebookUrl'),
         twitterUrl: formData.get('twitterUrl'),
         linkedinUrl: formData.get('linkedinUrl'),
@@ -49,11 +52,11 @@ export async function updateSiteSettings(prevState: any, formData: FormData) {
 }
 
 // --- Team Members ---
-export async function getTeamMembers() {
+export const getTeamMembers = cache(async () => {
     await connectToDatabase();
     const members = await TeamMember.find().sort({ createdAt: 1 }).lean();
     return JSON.parse(JSON.stringify(members));
-}
+});
 
 export async function getTeamMemberById(id: string) {
     if (!id) return null;
@@ -106,11 +109,11 @@ export async function deleteTeamMember(id: string) {
 }
 
 // --- Services ---
-export async function getServices() {
+export const getServices = cache(async () => {
     await connectToDatabase();
     const services = await Service.find().lean();
     return JSON.parse(JSON.stringify(services));
-}
+});
 
 export async function getServiceBySlug(slug: string) {
     if (!slug) return null;
@@ -126,14 +129,26 @@ export async function saveService(prevState: any, formData: FormData) {
     const rawImageUrl = formData.get('imageUrl') as string | null;
     const imageUrl = await uploadMedia(rawImageUrl, 'services');
 
+    const rawAboutImageUrl = formData.get('aboutImageUrl') as string | null;
+    const aboutImageUrl = await uploadMedia(rawAboutImageUrl, 'services-about');
+
+    let offerings = JSON.parse(formData.get('offerings') as string || '[]');
+    for (let i = 0; i < offerings.length; i++) {
+        if (offerings[i].customIconUrl && offerings[i].customIconUrl.startsWith('data:')) {
+            offerings[i].customIconUrl = await uploadMedia(offerings[i].customIconUrl, 'services-offerings');
+        }
+    }
+
     const data = {
         title: formData.get('title'),
         description: formData.get('description'),
         longDescription: formData.get('longDescription'),
         process: JSON.parse(formData.get('process') as string || '[]'),
+        offerings: offerings,
         icon: formData.get('icon'),
         slug: formData.get('slug'),
         imageUrl: imageUrl,
+        aboutImageUrl: aboutImageUrl,
     };
 
     if (id) {
@@ -157,11 +172,11 @@ export async function deleteService(id: string) {
 }
 
 // --- Tools ---
-export async function getTools() {
+export const getTools = cache(async () => {
     await connectToDatabase();
     const tools = await Tool.find().lean();
     return JSON.parse(JSON.stringify(tools));
-}
+});
 
 export async function saveTool(prevState: any, formData: FormData) {
     await connectToDatabase();
@@ -207,11 +222,11 @@ export async function deleteTool(id: string) {
 }
 
 // --- Careers ---
-export async function getCareers() {
+export const getCareers = cache(async () => {
     await connectToDatabase();
     const careers = await Career.find().sort({ createdAt: -1 }).lean();
     return JSON.parse(JSON.stringify(careers));
-}
+});
 
 export async function saveCareer(prevState: any, formData: FormData) {
     await connectToDatabase();
@@ -247,7 +262,7 @@ export async function deleteCareer(id: string) {
 }
 
 // --- Site Media ---
-export async function getSiteMedia() {
+export const getSiteMedia = cache(async () => {
     await connectToDatabase();
     const media = await SiteMedia.find().lean();
     const plainMedia = JSON.parse(JSON.stringify(media));
@@ -257,7 +272,7 @@ export async function getSiteMedia() {
         mediaMap[item.name] = item;
     });
     return mediaMap;
-}
+});
 
 export async function saveSiteMedia(prevState: any, formData: FormData) {
     await connectToDatabase();

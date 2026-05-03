@@ -32,14 +32,18 @@ export default function ServiceManager({ initialData }: { initialData: any[] }) 
     const [isOpen, setIsOpen] = useState(false);
     const [currentService, setCurrentService] = useState<any>(null);
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
+    const [selectedAboutImage, setSelectedAboutImage] = useState<string | null>(null);
     const [processSteps, setProcessSteps] = useState<{ title: string; description: string }[]>([]);
+    const [offerings, setOfferings] = useState<{ title: string; description: string; icon?: string; customIconUrl?: string }[]>([]);
 
     const { toast } = useToast();
 
     const handleOpen = (service: any = null) => {
         setCurrentService(service);
         setSelectedImage(service?.imageUrl || null);
+        setSelectedAboutImage(service?.aboutImageUrl || null);
         setProcessSteps(service?.process || []);
+        setOfferings(service?.offerings || []);
 
         setIsOpen(true);
     };
@@ -50,6 +54,17 @@ export default function ServiceManager({ initialData }: { initialData: any[] }) 
             const reader = new FileReader();
             reader.onloadend = () => {
                 setSelectedImage(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const handleAboutImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setSelectedAboutImage(reader.result as string);
             };
             reader.readAsDataURL(file);
         }
@@ -79,6 +94,33 @@ export default function ServiceManager({ initialData }: { initialData: any[] }) 
         setProcessSteps(newSteps);
     };
 
+    const handleAddOffering = () => {
+        setOfferings([...offerings, { title: '', description: '', icon: 'Code' }]);
+    };
+
+    const handleRemoveOffering = (index: number) => {
+        const newOfferings = [...offerings];
+        newOfferings.splice(index, 1);
+        setOfferings(newOfferings);
+    };
+
+    const handleOfferingChange = (index: number, field: string, value: string) => {
+        const newOfferings = [...offerings] as any[];
+        newOfferings[index][field] = value;
+        setOfferings(newOfferings);
+    };
+
+    const handleOfferingImageChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                handleOfferingChange(index, 'customIconUrl', reader.result as string);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
@@ -87,15 +129,24 @@ export default function ServiceManager({ initialData }: { initialData: any[] }) 
             formData.append('id', currentService._id);
         }
 
-        // Add image
+        // Add images
         if (selectedImage) {
             formData.append('imageUrl', selectedImage);
         } else {
             formData.append('imageUrl', '');
         }
 
+        if (selectedAboutImage) {
+            formData.append('aboutImageUrl', selectedAboutImage);
+        } else {
+            formData.append('aboutImageUrl', '');
+        }
+
         // Add process steps as JSON string
         formData.append('process', JSON.stringify(processSteps));
+        
+        // Add offerings as JSON string
+        formData.append('offerings', JSON.stringify(offerings));
 
 
         const result = await saveService(null, formData);
@@ -241,6 +292,82 @@ export default function ServiceManager({ initialData }: { initialData: any[] }) 
                             )}
                         </div>
 
+                        <div className="space-y-4 rounded-lg border p-4 bg-muted/20">
+                            <div className="flex items-center justify-between">
+                                <Label className="text-base font-semibold">Service Offerings (Sub-Services)</Label>
+                                <Button type="button" variant="outline" size="sm" onClick={handleAddOffering} className="gap-2">
+                                    <Plus className="h-3 w-3" /> Add Offering
+                                </Button>
+                            </div>
+
+                            {offerings.length === 0 ? (
+                                <p className="text-sm text-muted-foreground text-center py-4">No offerings added yet.</p>
+                            ) : (
+                                <div className="space-y-4">
+                                    {offerings.map((offering, index) => (
+                                        <div key={index} className="grid gap-2 border-b pb-4 last:border-0 relative bg-white p-3 rounded shadow-sm">
+                                            <div className="absolute right-2 top-2">
+                                                <Button type="button" variant="ghost" size="icon" className="h-6 w-6 text-red-500" onClick={() => handleRemoveOffering(index)}>
+                                                    <Trash2 className="h-3 w-3" />
+                                                </Button>
+                                            </div>
+                                            <div className="grid grid-cols-1 gap-2 pr-8">
+                                                <Label className="text-xs">Title</Label>
+                                                <Input
+                                                    value={offering.title}
+                                                    onChange={(e) => handleOfferingChange(index, 'title', e.target.value)}
+                                                    placeholder="e.g. Custom Web Apps"
+                                                    required
+                                                />
+                                            </div>
+                                            <div className="grid grid-cols-1 gap-2">
+                                                <Label className="text-xs">Short Description</Label>
+                                                <Textarea
+                                                    value={offering.description}
+                                                    onChange={(e) => handleOfferingChange(index, 'description', e.target.value)}
+                                                    placeholder="1-2 lines describing this specific offering..."
+                                                    required
+                                                    rows={2}
+                                                />
+                                            </div>
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2 p-2 border rounded bg-muted/30">
+                                                <div>
+                                                    <Label className="text-xs block mb-1">Built-in Icon Name</Label>
+                                                    <Input 
+                                                        value={offering.icon || ''}
+                                                        onChange={(e) => handleOfferingChange(index, 'icon', e.target.value)}
+                                                        placeholder="e.g. Code, Monitor, Smartphone"
+                                                        className="h-8 text-sm"
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <Label className="text-xs block mb-1">OR Upload Custom SVG/Image</Label>
+                                                    <div className="flex items-center gap-2">
+                                                        {offering.customIconUrl && (
+                                                            <div className="h-8 w-8 relative rounded overflow-hidden border">
+                                                                <Image src={offering.customIconUrl} alt="Icon" fill className="object-cover" />
+                                                            </div>
+                                                        )}
+                                                        <Input 
+                                                            type="file" 
+                                                            accept="image/*" 
+                                                            className="h-8 text-sm"
+                                                            onChange={(e) => handleOfferingImageChange(index, e)}
+                                                        />
+                                                        {offering.customIconUrl && (
+                                                            <Button type="button" variant="ghost" size="sm" className="h-8 px-2 text-red-500" onClick={() => handleOfferingChange(index, 'customIconUrl', '')}>
+                                                                Clear
+                                                            </Button>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+
 
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2 col-span-2">
@@ -310,7 +437,7 @@ export default function ServiceManager({ initialData }: { initialData: any[] }) 
                             {/* Removed original icon input, using hidden input above */}
                             <div className="space-y-4">
                                 <div className="space-y-1.5">
-                                    <Label htmlFor="image" className="text-base">Service Media</Label>
+                                    <Label htmlFor="image" className="text-base">Service Media (Hero/Thumbnail)</Label>
                                     <p className="text-[0.8rem] text-muted-foreground">
                                         Upload an image, GIF, or video. <strong>Bento Grid Display:</strong> To support the asymmetrical "Our Best Services" grid, we recommend a <strong>1:1 (e.g., 1080x1080)</strong> or <strong>16:9 (e.g., 1920x1080)</strong> resolution with a center-focused subject. Our system will automatically center crop (object-cover) the image based on whether the service appears in a wide or narrow card.
                                     </p>
@@ -341,6 +468,38 @@ export default function ServiceManager({ initialData }: { initialData: any[] }) 
                                         </div>
                                     ) : null}
                                     <Input id="image" type="file" accept="image/*,video/*" onChange={handleImageChange} />
+                                </div>
+                            </div>
+
+                            <div className="space-y-4 col-span-2">
+                                <div className="space-y-1.5">
+                                    <Label htmlFor="aboutImage" className="text-base">About Section Image</Label>
+                                    <p className="text-[0.8rem] text-muted-foreground">
+                                        Upload an image to display next to the "About Our Services" text on the individual service page.
+                                    </p>
+                                </div>
+                                <div className="flex gap-4 items-center">
+                                    {selectedAboutImage ? (
+                                        <div className="flex items-center gap-2">
+                                            <div className="relative h-12 w-12 overflow-hidden rounded-md border">
+                                                <Image src={selectedAboutImage} alt="About Preview" fill className="object-cover" />
+                                            </div>
+                                            <Button
+                                                type="button"
+                                                variant="destructive"
+                                                size="sm"
+                                                className="h-8 w-8 p-0"
+                                                onClick={() => {
+                                                    setSelectedAboutImage(null);
+                                                    const fileInput = document.getElementById('aboutImage') as HTMLInputElement;
+                                                    if (fileInput) fileInput.value = '';
+                                                }}
+                                            >
+                                                <Trash2 className="h-3 w-3" />
+                                            </Button>
+                                        </div>
+                                    ) : null}
+                                    <Input id="aboutImage" type="file" accept="image/*" onChange={handleAboutImageChange} />
                                 </div>
                             </div>
                         </div>

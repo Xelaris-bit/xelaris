@@ -27,7 +27,7 @@ const Stats = () => {
     <div className="bg-[#071436] py-20 text-primary-foreground">
       <div className="container mx-auto px-4">
         <div className="mx-auto mb-12 max-w-3xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-primary-foreground md:text-4xl animate-in fade-in slide-in-from-bottom-12 duration-1000">
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-primary-foreground md:text-4xl animate-in fade-in slide-in-from-bottom-12 duration-1000">
             Drive <span className="text-accent">Development</span> And <span className="text-accent">Innovation</span> Forward With Our
             Industry-Leading Expertise
           </h2>

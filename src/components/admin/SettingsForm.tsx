@@ -11,6 +11,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useActionState } from 'react';
 import { useEffect, useState, startTransition } from 'react';
 import { useToast } from "@/hooks/use-toast";
+import { Plus, Trash2 } from 'lucide-react';
 
 const initialState = {
     success: false,
@@ -21,6 +22,34 @@ export default function SettingsForm({ initialData }: { initialData: any }) {
     const { toast } = useToast();
     const [videoFile, setVideoFile] = useState<File | null>(null);
     const [isUploading, setIsUploading] = useState(false);
+
+    const [addresses, setAddresses] = useState<any[]>(initialData?.addresses || []);
+    const [contactEmails, setContactEmails] = useState<string[]>(initialData?.contactEmails || []);
+    const [phoneNumbers, setPhoneNumbers] = useState<string[]>(initialData?.phoneNumbers || []);
+
+    const addAddress = () => setAddresses([...addresses, { addressLine1: '', addressLine2: '', mapsUrl: '' }]);
+    const updateAddress = (index: number, field: string, value: string) => {
+        const newAddresses = [...addresses];
+        newAddresses[index][field] = value;
+        setAddresses(newAddresses);
+    };
+    const removeAddress = (index: number) => setAddresses(addresses.filter((_, i) => i !== index));
+
+    const addEmail = () => setContactEmails([...contactEmails, '']);
+    const updateEmail = (index: number, value: string) => {
+        const newEmails = [...contactEmails];
+        newEmails[index] = value;
+        setContactEmails(newEmails);
+    };
+    const removeEmail = (index: number) => setContactEmails(contactEmails.filter((_, i) => i !== index));
+
+    const addPhone = () => setPhoneNumbers([...phoneNumbers, '']);
+    const updatePhone = (index: number, value: string) => {
+        const newPhones = [...phoneNumbers];
+        newPhones[index] = value;
+        setPhoneNumbers(newPhones);
+    };
+    const removePhone = (index: number) => setPhoneNumbers(phoneNumbers.filter((_, i) => i !== index));
 
     useEffect(() => {
         if (state?.success) {
@@ -66,6 +95,9 @@ export default function SettingsForm({ initialData }: { initialData: any }) {
         }
 
         // Continue with normal settings save
+        formData.append('addresses', JSON.stringify(addresses));
+        formData.append('contactEmails', JSON.stringify(contactEmails));
+        formData.append('phoneNumbers', JSON.stringify(phoneNumbers));
         startTransition(() => {
             formAction(formData);
         });
@@ -85,23 +117,102 @@ export default function SettingsForm({ initialData }: { initialData: any }) {
                             <Input id="companyName" name="companyName" defaultValue={initialData?.companyName} suppressHydrationWarning />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="contactEmail">Contact Email</Label>
-                            <Input id="contactEmail" name="contactEmail" defaultValue={initialData?.contactEmail} suppressHydrationWarning />
-                        </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="phoneNumber">Phone Number</Label>
-                            <Input id="phoneNumber" name="phoneNumber" defaultValue={initialData?.phoneNumber} suppressHydrationWarning />
-                        </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="address">Address</Label>
-                            <Input id="address" name="address" defaultValue={initialData?.address} suppressHydrationWarning />
-                        </div>
-                        <div className="space-y-2">
                             <Label htmlFor="logoSize">Logo Size (Height in px)</Label>
                             <Input id="logoSize" name="logoSize" type="number" defaultValue={initialData?.logoSize ?? 32} suppressHydrationWarning />
                         </div>
                     </div>
-                    <div className="space-y-2">
+
+                    <div className="space-y-4 pt-4 border-t">
+                        <div className="flex items-center justify-between">
+                            <h3 className="font-semibold text-lg">Contact Emails</h3>
+                            <Button type="button" variant="outline" size="sm" onClick={addEmail}>
+                                <Plus className="w-4 h-4 mr-2" /> Add Email
+                            </Button>
+                        </div>
+                        {contactEmails.map((email, index) => (
+                            <div key={index} className="flex gap-2">
+                                <Input
+                                    value={email}
+                                    onChange={(e) => updateEmail(index, e.target.value)}
+                                    placeholder="contact@example.com"
+                                />
+                                <Button type="button" variant="ghost" size="icon" onClick={() => removeEmail(index)}>
+                                    <Trash2 className="w-4 h-4 text-red-500" />
+                                </Button>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="space-y-4 pt-4 border-t">
+                        <div className="flex items-center justify-between">
+                            <h3 className="font-semibold text-lg">Phone Numbers</h3>
+                            <Button type="button" variant="outline" size="sm" onClick={addPhone}>
+                                <Plus className="w-4 h-4 mr-2" /> Add Phone
+                            </Button>
+                        </div>
+                        {phoneNumbers.map((phone, index) => (
+                            <div key={index} className="flex gap-2">
+                                <Input
+                                    value={phone}
+                                    onChange={(e) => updatePhone(index, e.target.value)}
+                                    placeholder="+1 234 567 890"
+                                />
+                                <Button type="button" variant="ghost" size="icon" onClick={() => removePhone(index)}>
+                                    <Trash2 className="w-4 h-4 text-red-500" />
+                                </Button>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="space-y-4 pt-4 border-t">
+                        <div className="flex items-center justify-between">
+                            <h3 className="font-semibold text-lg">Office Addresses</h3>
+                            <Button type="button" variant="outline" size="sm" onClick={addAddress}>
+                                <Plus className="w-4 h-4 mr-2" /> Add Address
+                            </Button>
+                        </div>
+                        {addresses.map((address, index) => (
+                            <div key={index} className="flex flex-col gap-2 p-4 border rounded-md relative">
+                                <Button
+                                    type="button"
+                                    variant="ghost"
+                                    size="icon"
+                                    className="absolute top-2 right-2"
+                                    onClick={() => removeAddress(index)}
+                                >
+                                    <Trash2 className="w-4 h-4 text-red-500" />
+                                </Button>
+                                <div className="space-y-2 w-full pr-10">
+                                    <div>
+                                        <Label>Address Line 1</Label>
+                                        <Input
+                                            value={address.addressLine1}
+                                            onChange={(e) => updateAddress(index, 'addressLine1', e.target.value)}
+                                            placeholder="89, Kulasukarpada, Cuttack,"
+                                        />
+                                    </div>
+                                    <div>
+                                        <Label>Address Line 2</Label>
+                                        <Input
+                                            value={address.addressLine2}
+                                            onChange={(e) => updateAddress(index, 'addressLine2', e.target.value)}
+                                            placeholder="Odisha, India, 754209"
+                                        />
+                                    </div>
+                                    <div>
+                                        <Label>Google Maps URL</Label>
+                                        <Input
+                                            value={address.mapsUrl}
+                                            onChange={(e) => updateAddress(index, 'mapsUrl', e.target.value)}
+                                            placeholder="https://maps.app.goo.gl/..."
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="space-y-2 pt-4 border-t">
                         <h3 className="font-semibold">Social Media Links</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="space-y-2">

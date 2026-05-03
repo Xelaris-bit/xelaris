@@ -25,7 +25,7 @@ export default function OurBestServices({ services = [] }: { services?: any[] })
     }
   };
 
-  const itemVariants = {
+  const itemVariants: any = {
     hidden: { opacity: 0, y: 50, scale: 0.9 },
     show: {
       opacity: 1,
@@ -68,7 +68,7 @@ export default function OurBestServices({ services = [] }: { services?: any[] })
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, amount: 0.1 }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[450px] md:auto-rows-[500px]"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-min md:auto-rows-[500px]"
         >
           {displayServices.map((service, index) => {
             // Bento Grid logic: Some items take 2 columns
@@ -88,7 +88,7 @@ export default function OurBestServices({ services = [] }: { services?: any[] })
               <motion.div
                 key={service._id || index}
                 variants={itemVariants}
-                className={`group relative overflow-hidden rounded-[2rem] border border-border/20 bg-muted shadow-lg transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-1 flex flex-col ${bentoStyles}`}
+                className={`group relative overflow-hidden rounded-[2rem] border border-border/20 bg-muted shadow-lg transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-1 flex flex-col min-h-[420px] ${bentoStyles}`}
               >
                 {/* Background Image - Fully visible edge-to-edge */}
                 <div className="absolute inset-0 z-0 overflow-hidden">

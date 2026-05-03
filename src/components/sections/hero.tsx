@@ -41,7 +41,7 @@ const Hero = ({ videoUrl, services = [] }: { videoUrl?: string; services?: any[]
       <div className="absolute left-0 top-0 h-full w-full bg-black/40"></div>
       <div className="relative z-10 flex h-full flex-col items-center justify-center text-center text-primary-foreground">
         <div className="container mx-auto px-4">
-          <h1 className="animate-in fade-in slide-in-from-bottom-12 duration-1000 font-headline text-4xl font-extrabold tracking-tight md:text-5xl lg:text-6xl">
+          <h1 className="animate-in fade-in slide-in-from-bottom-12 duration-1000 font-headline text-3xl sm:text-4xl font-extrabold tracking-tight md:text-5xl lg:text-6xl">
             Centre of <span className="text-accent">Excellence</span> in Technology & <span className="text-accent">Innovation</span>
           </h1>
 

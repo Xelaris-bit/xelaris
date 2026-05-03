@@ -9,7 +9,7 @@ import { useToast } from '@/hooks/use-toast';
 import { handleResumeSubmission } from '@/app/actions';
 import { Loader2, FileUp } from 'lucide-react';
 
-const initialState = {
+const initialState: any = {
   message: '',
   errors: {},
   success: false,

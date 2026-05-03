@@ -157,7 +157,7 @@ const ToolsGrouped = ({ tools = [] }: { tools?: Tool[] }) => {
               key={group.category}
               onClick={() => setActiveCategory(group.category)}
               className={cn(
-                "px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 border border-transparent backdrop-blur-md",
+                "px-4 py-2 md:px-6 md:py-3 rounded-full text-xs md:text-sm font-medium transition-all duration-300 border border-transparent backdrop-blur-md",
                 activeCategory === group.category
                   ? "bg-primary/90 text-primary-foreground shadow-lg shadow-primary/25 scale-105"
                   : "bg-white/5 dark:bg-black/5 hover:bg-white/10 dark:hover:bg-white/5 text-muted-foreground hover:text-foreground border-white/10 hover:border-white/20"

@@ -2,10 +2,11 @@ import { Linkedin, Twitter, Youtube } from "lucide-react";
 import Link from "next/link";
 import Logo from "../icons/logo";
 
-import { getSiteMedia } from "@/app/admin/data-actions";
+import { getSiteMedia, getSiteSettings } from "@/app/admin/data-actions";
 
 const Footer = async () => {
   const media = await getSiteMedia();
+  const settings = await getSiteSettings();
   const logoUrl = media['footer-logo']?.data || media['logo']?.data;
 
   const navItems = [
@@ -25,15 +26,17 @@ const Footer = async () => {
   return (
     <footer id="footer" className="bg-[#071436] text-primary-foreground relative">
       <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-3 lg:grid-cols-4">
-          <div className="lg:col-span-1">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-3 lg:grid-cols-[1.5fr_0.8fr_1.2fr_1fr]">
+          <div className="lg:pr-8">
             <Link href="/" className="flex items-center gap-0.5 mb-2">
               {logoUrl ? (
-                <div className="relative mr-2 flex items-start justify-start h-12 sm:h-16">
+                <div className="relative mr-2 flex items-center justify-start" style={{ height: 'var(--logo-size, 64px)' }}>
                   <img src={logoUrl} alt="Logo" className="object-contain h-full w-auto max-w-[200px]" />
                 </div>
               ) : (
-                <Logo className="h-12 sm:h-16 w-auto" />
+                <div className="flex items-center justify-start" style={{ height: 'var(--logo-size, 64px)' }}>
+                  <Logo className="h-full w-auto" />
+                </div>
               )}
             </Link>
             <p className="mt-4 text-sm text-primary-foreground/80">
@@ -62,29 +65,71 @@ const Footer = async () => {
               Contact Us
             </h3>
             <ul className="mt-4 space-y-2 text-sm text-primary-foreground/80">
-              <li className="space-y-2">
-                <a
-                  href="https://maps.app.goo.gl/ZqeEXR2WJ1yJL5CE7"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-accent"
-                >
-                  89, Kulasukarpada, Cuttack, Odisha, India, 754209
-                </a>
-              </li>
-              <li className="space-y-2">
-                <a
-                  href="mailto:contact.xelaris@gmail.com"
-                  className="hover:text-accent"
-                >
-                  contact.xelaris@gmail.com
-                </a>
-              </li>
-              <li className="space-y-2">
-                <a href="tel:+919776198414" className="hover:text-accent">
-                  +91 9776198414
-                </a>
-              </li>
+              {settings?.addresses && settings.addresses.length > 0 ? (
+                settings.addresses.map((address: any, index: number) => (
+                  <li key={`address-${index}`} className="space-y-2">
+                    <a
+                      href={address.mapsUrl || "#"}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-accent"
+                    >
+                      {address.addressLine1}
+                      {address.addressLine2 && <><br />{address.addressLine2}</>}
+                    </a>
+                  </li>
+                ))
+              ) : (
+                <li className="space-y-2">
+                  <a
+                    href="https://maps.app.goo.gl/ZqeEXR2WJ1yJL5CE7"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-accent"
+                  >
+                    89, Kulasukarpada, Cuttack, Odisha,<br />
+                    India, 754209
+                  </a>
+                </li>
+              )}
+
+              {settings?.contactEmails && settings.contactEmails.length > 0 ? (
+                settings.contactEmails.map((email: string, index: number) => (
+                  <li key={`email-${index}`} className="space-y-2">
+                    <a
+                      href={`mailto:${email}`}
+                      className="hover:text-accent break-all"
+                    >
+                      {email}
+                    </a>
+                  </li>
+                ))
+              ) : (
+                <li className="space-y-2">
+                  <a
+                    href="mailto:contact.xelaris@gmail.com"
+                    className="hover:text-accent break-all"
+                  >
+                    contact.xelaris@gmail.com
+                  </a>
+                </li>
+              )}
+
+              {settings?.phoneNumbers && settings.phoneNumbers.length > 0 ? (
+                settings.phoneNumbers.map((phone: string, index: number) => (
+                  <li key={`phone-${index}`} className="space-y-2">
+                    <a href={`tel:${phone.replace(/\s+/g, '')}`} className="hover:text-accent break-all">
+                      {phone}
+                    </a>
+                  </li>
+                ))
+              ) : (
+                <li className="space-y-2">
+                  <a href="tel:+919776198414" className="hover:text-accent break-all">
+                    +91 9776198414
+                  </a>
+                </li>
+              )}
             </ul>
           </div>
           <div className="md:col-span-3 lg:col-span-1">

@@ -4,7 +4,7 @@ import PageHero from "@/components/sections/page-hero";
 import Testimonials from "@/components/sections/testimonials";
 import Stats from "@/components/sections/stats";
 import { FadeIn } from "@/components/fade-in";
-import { getTestimonials, getSiteMedia } from "@/app/admin/data-actions";
+import { getSiteMedia } from "@/app/admin/data-actions";
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -13,10 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default async function TestimonialsPage() {
-  const [testimonials, media] = await Promise.all([
-    getTestimonials(),
-    getSiteMedia()
-  ]);
+  const media = await getSiteMedia();
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -31,7 +28,7 @@ export default async function TestimonialsPage() {
           />
         </FadeIn>
         <FadeIn>
-          <Testimonials testimonials={testimonials} />
+          <Testimonials />
         </FadeIn>
         <FadeIn>
           <Stats />

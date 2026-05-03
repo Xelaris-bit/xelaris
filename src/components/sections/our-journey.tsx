@@ -100,7 +100,7 @@ const OurJourney = () => {
                     className="w-full relative perspective-[1000px]"
                   >
                     {/* Simplified aesthetics without overriding color shifts */}
-                    <div className="relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-slate-900/40 backdrop-blur-2xl p-8 md:p-12 shadow-xl transition-all duration-500 hover:border-white/20 hover:bg-slate-800/60 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(46,204,113,0.15)]">
+                    <div className="relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-slate-900/40 backdrop-blur-2xl p-6 md:p-12 shadow-xl transition-all duration-500 hover:border-white/20 hover:bg-slate-800/60 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(46,204,113,0.15)]">
 
                       {/* Optional BorderBeam */}
                       <BorderBeam size={300} duration={12} colorFrom="#3b82f6" colorTo="#22c55e" />
@@ -110,7 +110,7 @@ const OurJourney = () => {
                         <span className="inline-block px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-sm font-semibold text-blue-400 mb-6 transition-colors group-hover:bg-blue-500/20">
                           {item.year}
                         </span>
-                        <h3 className="text-3xl lg:text-4xl font-bold text-white mb-6 transition-colors duration-300">
+                        <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-4 md:mb-6 transition-colors duration-300">
                           {item.title}
                         </h3>
                         <p className="text-lg text-slate-400 leading-relaxed transition-colors duration-300 group-hover:text-slate-200">

@@ -35,8 +35,9 @@ export async function uploadMedia(fileData: string | undefined | null, folder: s
             return result.secure_url;
         } catch (error) {
             console.error("Cloudinary Upload Error:", error);
-            // Fallback to storing the original data if upload fails (or we could throw)
-            return fileData; 
+            // Do NOT fallback to storing base64 original data as it will bloat MongoDB.
+            // If the upload fails, return an empty string.
+            return ''; 
         }
     }
 
