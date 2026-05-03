@@ -1,12 +1,11 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { usePathname, useSearchParams } from "next/navigation";
 import { XelarisLoader } from "./xelaris-loader";
 
-export default function GlobalLoader({ children }: { children?: React.ReactNode }) {
-  const [loading, setLoading] = useState(true);
+function LoaderEffect({ setLoading }: { setLoading: (loading: boolean) => void }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -21,38 +20,36 @@ export default function GlobalLoader({ children }: { children?: React.ReactNode 
     let timeoutId: NodeJS.Timeout;
 
     const finishLoading = () => {
-      // Small artificial delay to guarantee smooth animation viewing 
-      // even if the page loads instantly
+      // Very short delay to ensure smooth transition without keeping the user waiting
       timeoutId = setTimeout(() => {
         setLoading(false);
         // Restore interaction and scrolling
         document.body.style.overflow = "";
         document.body.style.pointerEvents = "";
-      }, 600);
+      }, 150);
     };
 
-    if (document.readyState === "complete") {
-      finishLoading();
-    } else {
-      window.addEventListener("load", finishLoading);
-      // Fallback in case the load event got missed or takes excessively long
-      const fallbackTimeout = setTimeout(finishLoading, 3000);
-
-      return () => {
-        window.removeEventListener("load", finishLoading);
-        clearTimeout(fallbackTimeout);
-      };
-    }
+    // Immediately finish loading instead of waiting for the heavy window "load" event
+    finishLoading();
 
     return () => {
       clearTimeout(timeoutId);
       document.body.style.overflow = "";
       document.body.style.pointerEvents = "";
     };
-  }, [pathname, searchParams]); // Re-trigger loader on path/query change
+  }, [pathname, searchParams, setLoading]);
+
+  return null;
+}
+
+export default function GlobalLoader({ children }: { children?: React.ReactNode }) {
+  const [loading, setLoading] = useState(true);
 
   return (
     <>
+      <Suspense fallback={null}>
+        <LoaderEffect setLoading={setLoading} />
+      </Suspense>
       <AnimatePresence>
         {loading && (
           <motion.div
