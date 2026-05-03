@@ -286,6 +286,10 @@ export async function saveSiteMedia(prevState: any, formData: FormData) {
 
     const data = await uploadMedia(rawData, 'sitemedia');
 
+    if (rawData && rawData.startsWith('data:') && !data) {
+        return { success: false, message: 'Failed to upload media to Cloudinary. The file might be too large or unsupported.' };
+    }
+
     await SiteMedia.findOneAndUpdate(
         { name },
         { name, type, data },
