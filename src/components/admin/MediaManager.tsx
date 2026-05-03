@@ -70,26 +70,38 @@ export default function MediaManager({ initialMedia }: { initialMedia: Record<st
                     <Card key={slot.id} className="bg-white/90 backdrop-blur-sm">
                         <CardHeader>
                             <CardTitle className="text-lg">{slot.label}</CardTitle>
-                            <CardDescription>Upload a {slot.type}</CardDescription>
+                            <CardDescription>
+                                {slot.type === 'image' ? 'Upload an image' : `Upload a ${slot.type}`}
+                            </CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-4">
                             <div className="relative aspect-video w-full overflow-hidden rounded-md border bg-muted flex items-center justify-center">
                                 {currentImage ? (
-                                    <Image
-                                        src={currentImage}
-                                        alt={slot.label}
-                                        fill
-                                        className="object-contain"
-                                    />
+                                    slot.type === 'video' ? (
+                                        <video
+                                            src={currentImage}
+                                            className="h-full w-full object-contain"
+                                            controls
+                                        />
+                                    ) : (
+                                        <Image
+                                            src={currentImage}
+                                            alt={slot.label}
+                                            fill
+                                            className="object-contain"
+                                        />
+                                    )
                                 ) : (
-                                    <span className="text-muted-foreground text-sm">No Image</span>
+                                    <span className="text-muted-foreground text-sm">
+                                        {slot.type === 'video' ? 'No Video' : 'No Image'}
+                                    </span>
                                 )}
                             </div>
 
                             <div className="flex items-center gap-2">
                                 <Input
                                     type="file"
-                                    accept="image/*"
+                                    accept={slot.type === 'video' ? 'video/mp4,video/*' : 'image/*'}
                                     onChange={(e) => handleFileChange(e, slot.id)}
                                 />
                             </div>
