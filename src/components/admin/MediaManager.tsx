@@ -50,12 +50,15 @@ export default function MediaManager({ initialMedia }: { initialMedia: Record<st
         formData.append('data', data);
 
         try {
-            await saveSiteMedia(null, formData);
+            const result = await saveSiteMedia(null, formData);
+            if (result && result.success === false) {
+                throw new Error(result.message || "Failed to save media.");
+            }
             toast({ title: "Success", description: "Media updated successfully." });
             // Update initialMedia conceptually effectively by just relying on the preview state 
             // or a full page reload if we want to be strict, but preview is enough feedback.
-        } catch (err) {
-            toast({ title: "Error", description: "Failed to save media.", variant: "destructive" });
+        } catch (err: any) {
+            toast({ title: "Error", description: err.message || "Failed to save media.", variant: "destructive" });
         } finally {
             setLoading(null);
         }
